@@ -9,5 +9,5 @@
 - CI configuration is included but has not run on GitHub.
 - Managed browser preview failed because its relay did not become ready. No browser visual or interaction test is claimed.
 - GitHub repository creation was attempted through the authenticated CLI and rejected: `Resource not accessible by integration (createRepository)`. No remote was created and no code was pushed.
-- Full video access was throttled. Research is limited to the supplied slide and linked official documentation.
+- Product direction incorporates the supplied platform requirements. Full video analysis was unavailable.
 - Real agent execution, model billing, PR delivery, and production deployment remain unverified and need external integrations.

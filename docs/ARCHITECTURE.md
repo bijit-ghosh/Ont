@@ -4,6 +4,12 @@
 
 A software factory turns an authorized engineering request into a reviewed, verified change. Completion in Ont v0.1 means an external worker reported verification evidence; it does not mean a change was merged, deployed, or independently proven correct.
 
+## Platform model
+
+Ont connects five core capabilities: factories as code, data and context, sandboxed compute, swappable inference, and orchestration through APIs. Evaluation forms a feedback loop across these capabilities. The access surface includes the console, REST/OpenAPI, and planned MCP and engineering-tool integrations.
+
+A production factory definition must declare agent workflows, policies, and triggers alongside repository, model, execution, and approval settings. Full activity capture includes conversations, tool calls, artifacts, screenshots, and video, with provenance and retention controls. These are target capabilities; the implementation status below identifies the current release boundary.
+
 ## Implemented architecture
 
 ```mermaid

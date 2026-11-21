@@ -1,6 +1,8 @@
 # Ont · Software Factory
 
-Ont is a runnable, single-tenant software-factory **control-plane MVP** inspired by the seven-layer Warp stack. It is original software, not a copy of Warp source or branding. It is not yet an autonomous production software factory.
+Ont is a software factory for managing and improving cloud-based coding agents at scale. Its architecture combines declarative factory definitions, recorded agent activity, sandboxed compute, swappable models and harnesses, and API-first orchestration.
+
+This release is a runnable, single-tenant **control-plane MVP**. The production architecture and integration roadmap extend that foundation into a cloud execution platform.
 
 ## What works
 
@@ -55,7 +57,7 @@ The suite verifies API authorization boundaries, concurrent claim exclusivity, s
 
 A coding agent/model provider, automatic GitHub pull requests, repository checkout provisioning, production deployment/rollback, multi-agent fan-out, semantic memory, MCP, connector OAuth, SSO/RBAC, tenant isolation, independent evidence verification, provider-side spending enforcement, and comparative evaluation infrastructure. Live work waits for a compatible external harness. The reference runner provides the transport and container boundary, not the agent itself.
 
-See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the target production stack and phased build, [docs/RESEARCH.md](docs/RESEARCH.md) for the Warp analysis and evidence boundaries, and [docs/WORKER.md](docs/WORKER.md) for the execution protocol.
+See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the target production stack and phased build, [docs/PRODUCT.md](docs/PRODUCT.md) for the Ont product direction and evaluation strategy, and [docs/WORKER.md](docs/WORKER.md) for the execution protocol.
 
 ## Repository handoff
 
