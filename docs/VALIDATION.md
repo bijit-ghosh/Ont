@@ -33,3 +33,7 @@ The refreshed lockfile was installed in a clean Python 3.12 virtual environment.
 ## Polyglot planner validation
 
 The release gate now also compiles the C++20 scheduler with warnings as errors, runs its invariant tests, repeats them with address/undefined-behavior sanitizers, and runs an optimized placement microbenchmark. Three combined cycles passed locally: 72 Python test executions plus native checks/sanitizers. One recorded local sample for 256 slots and 10,000 timed scans reported p50 290 ns, p95 301 ns, and p99 491 ns. Timing varies with compiler/host load; this is in-process selection overhead only, not sandbox startup or network latency. There is no absolute timing gate on shared CI runners.
+
+## Optional integration regression coverage
+
+The integration suite adds model response/endpoint validation, budget reservation exhaustion and settlement, scoped embedding retrieval, one-use PKCE state, tenant database separation and role enforcement, existing draft-PR reconciliation, checkout allowlisting, failed-rollout undo, bounded fan-out, MCP discovery, verification image requirements, verification failure propagation, and invalid-credential rejection. Provider/GitHub/Kubernetes/Docker adapter tests use controlled transports or mocks where external systems are involved. They establish contract behavior, not live service qualification. The complete suite now contains 36 Python tests plus native checks/sanitizers.

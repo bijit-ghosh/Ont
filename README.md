@@ -57,11 +57,11 @@ python -m compileall -q ont scripts
 
 The suite verifies API authorization boundaries, concurrent claim exclusivity, state transitions, human gates, evidence requirements, stale-result rejection, budget accounting, cancellation, persistence, export, and demo/live separation. Browser preview attempted in the build environment, but the preview relay timed out; browser visual QA remains unverified. The Docker image built successfully and the same 12 tests passed inside the container. The build required the environment CA as a temporary BuildKit secret; TLS verification remained enabled. The external agent harness itself has not been exercised.
 
-## What is not implemented
+## Integration capabilities
 
-A coding agent/model provider, automatic GitHub pull requests, repository checkout provisioning, production deployment/rollback, multi-agent fan-out, semantic memory, MCP, connector OAuth, SSO/RBAC, tenant isolation, independent evidence verification, provider-side spending enforcement, and comparative evaluation infrastructure. Live work waits for a compatible external harness. The reference runner provides the transport and container boundary, not the agent itself.
+The optional integration package now includes a model proposal client, immutable checkout and draft-PR delivery, isolated verification, bounded fan-out, Kubernetes rollout/rollback, scoped embedding retrieval, a tenant/role gateway, PKCE transactions, and a minimal local MCP capability tool. These adapters are tested offline and require explicit operator wiring. They are not automatically activated in the reference worker.
 
-See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the target production stack and phased build, [docs/PRODUCT.md](docs/PRODUCT.md) for the Ont product direction and evaluation strategy, and [docs/WORKER.md](docs/WORKER.md) for the execution protocol.
+See [integration setup and status](docs/INTEGRATIONS.md) for exact capabilities, required credentials, and live validation gates. SSO token validation, complete connector OAuth, provider-enforced spending limits, autonomous cloud provisioning, and production rollout qualification remain deployment/integration work.
 
 ## Repository handoff
 

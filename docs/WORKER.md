@@ -68,3 +68,7 @@ The backend refuses to dispatch runs with exhausted accounted budgets and refuse
 ## Evaluation handoff
 
 Worker receipts can become evaluation records only after trusted outcome labeling and sanitization. The continuous improvement process must not use a worker claim of success as independent reward evidence. See [IMPROVEMENT.md](IMPROVEMENT.md) and [SYSTEM_DESIGN.md](SYSTEM_DESIGN.md).
+
+## Optional coding and delivery adapter
+
+`ont.integrations.coding` adds an immutable-checkout → structured model patch → allowed-path local commit → isolated verification path, with a separate explicit draft-PR publication function. See [INTEGRATIONS.md](INTEGRATIONS.md). This library does not automatically replace the Docker reference harness; configure a trusted adapter before queueing real coding work.

@@ -20,13 +20,9 @@ flowchart LR
   Future[Planned: GitHub App / MCP / inference gateway / memory adapter] -. scoped adapters .-> API
 ```
 
-## Reference-informed decisions
+## Repository organization
 
-[CyberOps](https://github.com/bijit-ghosh/CyberOps) demonstrates revision-bound evidence and deterministic release gates. Ont adopts the architectural principle that verification must bind to a specific change and that missing evidence cannot become success. A dedicated signed release-receipt service remains planned.
-
-[CortexState](https://github.com/bijit-ghosh/CortexState) demonstrates scoped context, provenance, revision checks, and reviewed lesson promotion. Ont uses immutable factory snapshots and evaluation reports today. A scoped context adapter should carry workspace/repository/run identity, expiry, source revision, and permission checks; it is not bundled in this release.
-
-These are independent reference projects. Ont's implementation remains MIT-licensed; no source was copied or vendor dependency added. The repository search found CortexState, not a repository named Cortex X.
+The reference projects were consulted only for repository organization: clear quickstarts, a documentation index, explicit validation evidence, and separated implementation, examples, and operations material. Ont's feature architecture and implementation are independent; no source or architecture was adopted from those projects.
 
 ## Implementation map
 

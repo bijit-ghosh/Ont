@@ -101,7 +101,7 @@ def create_app(db_path=None):
             key = os.getenv('ONT_WORKER_TOKEN' if worker else 'ONT_ADMIN_TOKEN', '')
             if worker and not key:
                 return JSONResponse({'detail':'Worker access disabled; configure ONT_WORKER_TOKEN'},503)
-            if key and not hmac.compare_digest(req.headers.get('authorization',''), 'Bearer '+key):
+            if key and not hmac.compare_digest(req.headers.get('authorization','').encode(), ('Bearer '+key).encode()):
                 return JSONResponse({'detail':'Authentication required'},401)
             origin = req.headers.get('origin')
             if origin and origin != str(req.base_url).rstrip('/'):
@@ -201,7 +201,7 @@ def create_app(db_path=None):
             event(c,r['id'],'claimed',f'{data.worker} claimed {STAGES[r["stage"]]}')
             return {'run':public(get(c,r['id'])),'lease':token,'lease_until':until,'remaining_budget':r['budget']-r['cost'], 'artifacts':[dict(a) for a in c.execute('SELECT * FROM artifacts WHERE run_id=? ORDER BY created',(r['id'],))]}
     def check_lease(r,token):
-        if r['status']!='running' or not hmac.compare_digest(r['lease'] or '',token) or r['lease_until']<time.time():
+        if r['status']!='running' or not hmac.compare_digest((r['lease'] or '').encode(),token.encode()) or r['lease_until']<time.time():
             raise HTTPException(409,'Lease expired, superseded, or run no longer active')
     @app.post('/api/worker/{rid}/heartbeat')
     def heartbeat(rid:str,data: Lease):
