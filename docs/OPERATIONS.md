@@ -50,3 +50,7 @@ To restore: stop the service and workers, retain the current database directory 
 - Individual identity/RBAC, stronger audit integrity, tenant isolation, and durable cloud execution before offering a multi-tenant service.
 
 These are release gates to validate, not claims that those integrations are already operational.
+
+## Improvement process operations
+
+Run the dataset watcher as a separate unprivileged process with read-only dataset access and a writable report directory. Give it no admin token, provider keys, or deployment permission. Use your process supervisor to restart on failure; SIGTERM stops cleanly. Monitor rejected datasets and report age. Do not interpret a quiet inbox as evidence of ongoing model improvement.

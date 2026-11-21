@@ -1,17 +1,27 @@
-# Validation record
+# Ont validation report
 
-- Python application and worker compile successfully.
-- Browser JavaScript passes `node --check`.
-- All 12 API tests pass on the workspace runtime.
-- Docker image `ont-control-plane:0.1` builds successfully using the normal Dockerfile with a session-only CA secret added to a temporary Dockerfile. The source Dockerfile was not changed to disable TLS or embed the CA.
-- All 12 API tests also pass in that non-root container with networking disabled.
-- `requirements.lock.txt` captures the dependency versions installed in the successful container build. It does not include cryptographic package hashes.
-- CI configuration is included but has not run on GitHub.
-- Managed browser preview failed because its relay did not become ready. No browser visual or interaction test is claimed.
-- GitHub repository creation was attempted through the authenticated CLI and rejected: `Resource not accessible by integration (createRepository)`. No remote was created and no code was pushed.
-- Product direction incorporates the supplied platform requirements. Full video analysis was unavailable.
-- Real agent execution, model billing, PR delivery, and production deployment remain unverified and need external integrations.
+## Current checks
 
-## Hardening validation
+The release gate runs `python scripts/validate.py --cycles 3`. All 24 tests pass per cycle, for 72 successful test executions. Python compilation, browser JavaScript syntax, and diff whitespace checks also pass. The machine-readable result is written to `validation-report.json` and retained by GitHub CI.
 
-Added four production regression tests covering fail-closed credentials/host configuration, health/auth boundaries, chunked request limits, and pagination validation. All 16 tests passed in three consecutive cycles (48 test executions); Python compilation, JavaScript syntax, and diff checks also passed. The new validation loop emits a JSON report and is wired into CI. These results are local; the updated container and external execution harness require separate verification.
+| Area | Evidence |
+| --- | --- |
+| Workflow correctness | Human gates, demo/live separation, rejection, cancellation, required evidence, budgets, immutable snapshots |
+| Worker consistency | Exclusive concurrent claims, lease expiry/recovery, stale-result rejection, heartbeat |
+| Production boundary | Fail-closed secrets/hosts, auth separation, health, malformed and streamed request limits, pagination bounds |
+| Storage | Persistence, artifact hashes, JSON export, consistent online backup, restored record count and SQLite integrity check |
+| Synthetic load | 100 concurrent run creations across eight threads; unique IDs, successful responses, two complete pages, successful restore |
+| Improvement | Held-out paired gains, safety/quality vetoes, minimum sample gate, duplicate/unpaired rejection, bounded-reward UCB selection |
+| Continuous evaluation | Two scans of identical evidence produce one content-addressed report and no production promotion |
+
+Synthetic load and reward tests validate implementation behavior; they do not establish real deployment capacity or software-generation quality. The measured local workload duration varies by machine and is not an SLA.
+
+## Historical and current evidence boundaries
+
+The earlier container build and 12-test container run passed. The subsequent 16-test GitHub CI release passed. The current changes require their own CI run. No updated container build, real model execution, external PR automation, neural RL training, or production rollout is claimed from these local checks.
+
+Managed browser preview previously failed because the environment relay did not become ready. JavaScript syntax checks are not browser interaction tests. Browser/accessibility, real-world load/soak, provider cost reconciliation, independent exact-commit verification, sandbox assessment, TLS/monitoring, and deployed restore rehearsal remain explicit release gates in [OPERATIONS.md](OPERATIONS.md).
+
+## Reproduce
+
+Install `requirements.lock.txt`, run the release gate, inspect the report, and review CI output for the matching commit. A failed check stops the loop. Fix the cause before rerunning; do not suppress failed checks or count retries as additional independent evidence.

@@ -48,3 +48,7 @@ Make every accepted change explainable: task and acceptance criteria, configurat
 5. Require agreed quality and cost thresholds before promoting a configuration; preserve rollback to the previous version.
 
 The current release establishes workflow and evidence capture. Production throughput and quality improvements require real integrations and measured deployment outcomes.
+
+## Improvement implementation
+
+The release includes paired held-out evaluation, task-level uncertainty estimation, a bounded-reward UCB selector, and an idempotent continuous dataset watcher. Candidate generation, real provider learning, canary deployment, and automatic rollback remain integration work. See [IMPROVEMENT.md](IMPROVEMENT.md).

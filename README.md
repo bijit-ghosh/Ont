@@ -70,3 +70,7 @@ MIT License. Copyright (c) 2026 Bijit Ghosh. See [LICENSE](LICENSE).
 ## Release operations
 
 See [docs/OPERATIONS.md](docs/OPERATIONS.md) for production settings, health checks, backup/restore, and outstanding release gates. Run `python scripts/validate.py --cycles 3` for the repeatable release gate.
+
+## Continuous improvement and concrete design
+
+[System design](docs/SYSTEM_DESIGN.md) defines service boundaries, delivery semantics, evidence contracts, and rollout gates. [Improvement guide](docs/IMPROVEMENT.md) describes the implemented paired evaluator, UCB learning primitive, continuous dataset watcher, and production promotion design. These modules evaluate supplied evidence; real model training and autonomous policy deployment require additional integrations.

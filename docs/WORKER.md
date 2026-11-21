@@ -64,3 +64,7 @@ The backend refuses to dispatch runs with exhausted accounted budgets and refuse
 - Cancellation-aware provider calls, idempotent external actions, and error cost reconciliation.
 - Independent verifier, signed receipts, object-store artifacts, durable queue/workflow engine.
 - Per-worker short-lived identity and tenant-scoped claims.
+
+## Evaluation handoff
+
+Worker receipts can become evaluation records only after trusted outcome labeling and sanitization. The continuous improvement process must not use a worker claim of success as independent reward evidence. See [IMPROVEMENT.md](IMPROVEMENT.md) and [SYSTEM_DESIGN.md](SYSTEM_DESIGN.md).

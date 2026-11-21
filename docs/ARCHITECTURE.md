@@ -89,3 +89,7 @@ Add environment-specific promotion policy, canary delivery, runtime feedback, ro
 ## Operational limits
 
 The MVP uses SQLite with serialized writes and is intended for one workspace, not a multi-region fleet. Text artifacts are bounded per request, but aggregate quotas, pagination, retention jobs, and large-file storage are still needed. There is no scheduler, billing service, independent evidence verifier, or automatic incident recovery. Public exposure requires hardened ingress, authenticated users, rate limits, observability, backups, and security review.
+
+## Detailed contracts
+
+See [SYSTEM_DESIGN.md](SYSTEM_DESIGN.md) for plane ownership, transactional delivery, evidence schemas, rollout phases, and proposed service objectives. See [IMPROVEMENT.md](IMPROVEMENT.md) for the implemented offline evaluator and continuous loop.
