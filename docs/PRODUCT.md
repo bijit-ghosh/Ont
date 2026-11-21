@@ -1,6 +1,6 @@
 # Ont product direction
 
-Ont manages and improves cloud-based coding agents at scale. Teams define how software should be built, run agents in controlled environments, retain evidence of the work, and use measured outcomes to improve the factory.
+Ont is an autonomous production software factory that manages and improves cloud-based coding agents at scale. Teams define how software should be built, run agents in controlled environments, retain evidence of the work, and use measured outcomes to improve the factory.
 
 ## Platform principles
 

@@ -5,5 +5,7 @@
   "scripts": {
     "dev": "python -m scripts.dev",
     "test": "python -m unittest discover -s tests -v"
-  }
+  },
+  "description": "Ont \u2014 autonomous production software factory",
+  "license": "MIT"
 }

@@ -1,6 +1,6 @@
 # Ont · Software Factory
 
-Ont is a software factory for managing and improving cloud-based coding agents at scale. Its architecture combines declarative factory definitions, recorded agent activity, sandboxed compute, swappable models and harnesses, and API-first orchestration.
+Ont is an autonomous production software factory for managing and improving cloud-based coding agents at scale. Its architecture combines declarative factory definitions, recorded agent activity, sandboxed compute, swappable models and harnesses, and API-first orchestration.
 
 This release is a runnable, single-tenant **control-plane MVP**. The production architecture and integration roadmap extend that foundation into a cloud execution platform.
 
@@ -62,3 +62,7 @@ See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the target production stack
 ## Repository handoff
 
 Source is ready as a new project at `/workspace/ont`. No existing GitHub repositories were modified. Once an empty `bijit-ghosh/Ont` repository exists, push this project using your usual Git credentials. The connected GitHub tools do not expose repository creation, and the authenticated CLI attempt was rejected with `Resource not accessible by integration (createRepository)`. An account credential with repository-creation permission or a pre-created empty repository is required. The included source archive can also be imported into your preferred IDE.
+
+## License
+
+MIT License. Copyright (c) 2026 Bijit Ghosh. See [LICENSE](LICENSE).
