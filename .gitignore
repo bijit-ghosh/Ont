@@ -4,3 +4,4 @@ data/
 .env
 .venv/
 *.sqlite3*
+validation-report.json

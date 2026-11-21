@@ -28,7 +28,7 @@ pip install -r requirements.lock.txt
 python -m uvicorn ont.app:app --host 127.0.0.1 --port 3000
 ```
 
-Open `http://127.0.0.1:3000`. Without tokens this is a local development instance: the admin API is open and the worker API is disabled. Do not expose this mode publicly. The default repository identifier `bijit-ghosh/Ont` is a placeholder; the project has not created that GitHub repository.
+Open `http://127.0.0.1:3000`. Without tokens this is a local development instance: the admin API is open and the worker API is disabled. Do not expose this mode publicly. The default repository identifier is `bijit-ghosh/Ont`.
 
 Click **Explore a demo workflow**, simulate each stage, inspect artifacts, and approve spec and review. No model calls, repository changes, test execution, merges, or deployments happen in demo mode.
 
@@ -61,8 +61,12 @@ See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the target production stack
 
 ## Repository handoff
 
-Source is ready as a new project at `/workspace/ont`. No existing GitHub repositories were modified. Once an empty `bijit-ghosh/Ont` repository exists, push this project using your usual Git credentials. The connected GitHub tools do not expose repository creation, and the authenticated CLI attempt was rejected with `Resource not accessible by integration (createRepository)`. An account credential with repository-creation permission or a pre-created empty repository is required. The included source archive can also be imported into your preferred IDE.
+Source is maintained at https://github.com/bijit-ghosh/Ont.
 
 ## License
 
 MIT License. Copyright (c) 2026 Bijit Ghosh. See [LICENSE](LICENSE).
+
+## Release operations
+
+See [docs/OPERATIONS.md](docs/OPERATIONS.md) for production settings, health checks, backup/restore, and outstanding release gates. Run `python scripts/validate.py --cycles 3` for the repeatable release gate.

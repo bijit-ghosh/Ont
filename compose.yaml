@@ -6,9 +6,20 @@ services:
     environment:
       ONT_ADMIN_TOKEN: ${ONT_ADMIN_TOKEN:?Set a strong admin token}
       ONT_WORKER_TOKEN: ${ONT_WORKER_TOKEN:?Set a distinct worker token}
+      ONT_ENV: production
+      ONT_ALLOWED_HOSTS: ${ONT_ALLOWED_HOSTS:?Set comma-separated hostnames}
       ONT_DB: /app/data/ont.sqlite3
     volumes:
       - ont-data:/app/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:3000/health/ready', timeout=3)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    mem_limit: 512m
+    cpus: 1
+    pids_limit: 128
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true

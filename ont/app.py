@@ -9,7 +9,8 @@ import time
 from contextlib import contextmanager
 from pathlib import Path
 from typing import Literal
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Request, Query
+from starlette.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
@@ -22,6 +23,14 @@ DEFAULT = {'name': 'Product engineering', 'repository': 'bijit-ghosh/Ont', 'budg
 
 def create_app(db_path=None):
     db_path = str(db_path or os.getenv('ONT_DB', ROOT / 'data' / 'ont.sqlite3'))
+    production = os.getenv('ONT_ENV', 'development') == 'production'
+    admin_token = os.getenv('ONT_ADMIN_TOKEN', '')
+    worker_token = os.getenv('ONT_WORKER_TOKEN', '')
+    if production and (len(admin_token) < 32 or len(worker_token) < 32 or admin_token == worker_token):
+        raise RuntimeError('Production requires distinct admin and worker tokens of at least 32 characters')
+    allowed_hosts = [h.strip() for h in os.getenv('ONT_ALLOWED_HOSTS', '').split(',') if h.strip()]
+    if production and (not allowed_hosts or '*' in allowed_hosts):
+        raise RuntimeError('Production requires explicit ONT_ALLOWED_HOSTS without a wildcard')
     Path(db_path).parent.mkdir(parents=True, exist_ok=True)
     @contextmanager
     def db():
@@ -37,6 +46,8 @@ def create_app(db_path=None):
             raise
         finally:
             con.close()
+    with sqlite3.connect(db_path) as setup:
+        setup.execute('PRAGMA journal_mode=WAL')
     with db() as c:
         c.executescript('''
         CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value TEXT NOT NULL);
@@ -48,12 +59,16 @@ def create_app(db_path=None):
         CREATE TABLE IF NOT EXISTS events (
           id INTEGER PRIMARY KEY AUTOINCREMENT, run_id TEXT NOT NULL REFERENCES runs(id),
           kind TEXT NOT NULL, message TEXT NOT NULL, created REAL NOT NULL);
+        CREATE INDEX IF NOT EXISTS run_queue ON runs(status,mode,created);
+        CREATE INDEX IF NOT EXISTS event_run ON events(run_id,id);
         CREATE TABLE IF NOT EXISTS artifacts (
           id TEXT PRIMARY KEY, run_id TEXT NOT NULL REFERENCES runs(id), stage TEXT NOT NULL,
           name TEXT NOT NULL, content TEXT NOT NULL, sha256 TEXT NOT NULL, created REAL NOT NULL);
         ''')
         c.execute('INSERT OR IGNORE INTO settings VALUES (?,?)', ('factory', json.dumps(DEFAULT)))
     app = FastAPI(title='Ont Software Factory', version='0.1.0', docs_url=None, redoc_url=None)
+    if allowed_hosts:
+        app.add_middleware(TrustedHostMiddleware, allowed_hosts=allowed_hosts)
     def event(c, rid, kind, message):
         c.execute('INSERT INTO events(run_id,kind,message,created) VALUES (?,?,?,?)', (rid,kind,message,time.time()))
     def get(c, rid):
@@ -81,7 +96,7 @@ def create_app(db_path=None):
     @app.middleware('http')
     async def security(req: Request, call_next):
         # Token remains in environment/session memory, never in shipped source.
-        if req.url.path.startswith('/api'):
+        if req.url.path.startswith('/api') or req.url.path == '/openapi.json':
             worker = req.url.path.startswith('/api/worker/')
             key = os.getenv('ONT_WORKER_TOKEN' if worker else 'ONT_ADMIN_TOKEN', '')
             if worker and not key:
@@ -91,18 +106,36 @@ def create_app(db_path=None):
             origin = req.headers.get('origin')
             if origin and origin != str(req.base_url).rstrip('/'):
                 return JSONResponse({'detail':'Cross-origin request rejected'},403)
-            if req.headers.get('content-length','0').isdigit() and int(req.headers.get('content-length','0'))>1_100_000:
-                return JSONResponse({'detail':'Request too large'},413)
+            length = req.headers.get('content-length')
+            if length is not None and (not length.isdigit() or int(length) > 1_100_000):
+                return JSONResponse({'detail':'Invalid or excessive request size'},413)
+            chunks = []; size = 0
+            async for chunk in req.stream():
+                size += len(chunk)
+                if size > 1_100_000:
+                    return JSONResponse({'detail':'Request too large'},413)
+                chunks.append(chunk)
+            req._body = b''.join(chunks)
         response = await call_next(req)
         response.headers['X-Content-Type-Options']='nosniff'
         response.headers['Referrer-Policy']='no-referrer'
         response.headers['Content-Security-Policy']="default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'"
         if req.url.path.startswith('/api'): response.headers['Cache-Control']='no-store'
         return response
+    @app.get('/health/live', include_in_schema=False)
+    def live(): return {'status':'ok'}
+    @app.get('/health/ready', include_in_schema=False)
+    def ready():
+        try:
+            with db() as c: c.execute('SELECT 1 FROM settings LIMIT 1').fetchone()
+        except sqlite3.Error:
+            return JSONResponse({'status':'unavailable'},503)
+        return {'status':'ready'}
     @app.get('/api/overview')
-    def overview():
+    def overview(limit: int = Query(default=100,ge=1,le=500), offset: int = Query(default=0,ge=0)):
+
         with db() as c:
-            runs = [public(r) for r in c.execute('SELECT * FROM runs ORDER BY created DESC')]
+            runs = [public(r) for r in c.execute('SELECT * FROM runs ORDER BY created DESC LIMIT ? OFFSET ?', (limit,offset))]
             config = json.loads(c.execute("SELECT value FROM settings WHERE key='factory'").fetchone()[0])
         return {'runs':runs,'factory':config,'stages':STAGES,
                 'auth_enabled':bool(os.getenv('ONT_ADMIN_TOKEN')), 'worker_enabled':bool(os.getenv('ONT_WORKER_TOKEN'))}
@@ -113,7 +146,7 @@ def create_app(db_path=None):
         return data
     @app.post('/api/runs',status_code=201)
     def create(data: NewRun):
-        rid = 'ont-'+secrets.token_hex(4)
+        rid = 'ont-'+secrets.token_hex(12)
         with db() as c:
             config=json.loads(c.execute("SELECT value FROM settings WHERE key='factory'").fetchone()[0])
             now=time.time()
@@ -200,6 +233,9 @@ def create_app(db_path=None):
                 event(c,rid,'budget','Accounted budget exhausted; no next stage dispatched')
             else: transition(c,r)
             return public(get(c,rid))
+    @app.exception_handler(sqlite3.OperationalError)
+    async def database_unavailable(request, exc):
+        return JSONResponse({'detail':'Database unavailable; retry later'},503,headers={'Retry-After':'3'})
     @app.get('/api/export')
     def export():
         with db() as c:

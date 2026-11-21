@@ -11,3 +11,7 @@
 - GitHub repository creation was attempted through the authenticated CLI and rejected: `Resource not accessible by integration (createRepository)`. No remote was created and no code was pushed.
 - Product direction incorporates the supplied platform requirements. Full video analysis was unavailable.
 - Real agent execution, model billing, PR delivery, and production deployment remain unverified and need external integrations.
+
+## Hardening validation
+
+Added four production regression tests covering fail-closed credentials/host configuration, health/auth boundaries, chunked request limits, and pagination validation. All 16 tests passed in three consecutive cycles (48 test executions); Python compilation, JavaScript syntax, and diff checks also passed. The new validation loop emits a JSON report and is wired into CI. These results are local; the updated container and external execution harness require separate verification.
