@@ -1,0 +1,18 @@
+services:
+  control-plane:
+    build: .
+    ports:
+      - "127.0.0.1:3000:3000"
+    environment:
+      ONT_ADMIN_TOKEN: ${ONT_ADMIN_TOKEN:?Set a strong admin token}
+      ONT_WORKER_TOKEN: ${ONT_WORKER_TOKEN:?Set a distinct worker token}
+      ONT_DB: /app/data/ont.sqlite3
+    volumes:
+      - ont-data:/app/data
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+volumes:
+  ont-data:

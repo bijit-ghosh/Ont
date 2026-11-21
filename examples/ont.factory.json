@@ -1,0 +1,7 @@
+{
+  "name": "Ont product engineering",
+  "repository": "bijit-ghosh/Ont",
+  "budget": 20,
+  "model": "Bring your own harness",
+  "approval_stages": ["spec", "review"]
+}

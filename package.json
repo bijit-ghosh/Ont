@@ -1,0 +1,9 @@
+{
+  "name": "ont-software-factory",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "python -m scripts.dev",
+    "test": "python -m unittest discover -s tests -v"
+  }
+}
