@@ -1,5 +1,6 @@
 # Ont documentation index
 
+- [Factory stack](FACTORY_STACK.md): layered architecture and presentation graphic
 - [Product](PRODUCT.md): scope and outcomes
 - [Architecture map](ARCHITECTURE_MAP.md): module boundaries
 - [System design](SYSTEM_DESIGN.md): production service contracts

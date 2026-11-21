@@ -1,5 +1,7 @@
 # Ont architecture map
 
+See the [Ont Software Factory Stack](FACTORY_STACK.md) for the layered project view and implementation boundaries.
+
 ![Ont architecture map](assets/ont-architecture.svg)
 
 Solid boxes name implemented modules. Dashed boxes name planned adapters or cloud services. Arrows are data/control contracts, not evidence that a planned integration is installed.

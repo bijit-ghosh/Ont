@@ -1,5 +1,7 @@
 # Ont concrete system design
 
+See the [Ont Software Factory Stack](FACTORY_STACK.md) for the layered project view and implementation boundaries.
+
 ## Planes and ownership
 
 ```mermaid

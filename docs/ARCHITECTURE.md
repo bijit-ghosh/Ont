@@ -1,5 +1,7 @@
 # Ont implementation and target software stack
 
+See the [Ont Software Factory Stack](FACTORY_STACK.md) for the layered project view and implementation boundaries.
+
 ## Product boundary
 
 A software factory turns an authorized engineering request into a reviewed, verified change. Completion in Ont v0.1 means an external worker reported verification evidence; it does not mean a change was merged, deployed, or independently proven correct.
