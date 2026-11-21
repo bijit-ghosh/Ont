@@ -1,5 +1,9 @@
 # Ont · Software Factory
 
+![Ont architecture](docs/assets/ont-architecture.svg)
+
+[Architecture map](docs/ARCHITECTURE_MAP.md) · [System design](docs/SYSTEM_DESIGN.md) · [Validation](docs/VALIDATION.md) · [Dependency maintenance](docs/DEPENDENCIES.md)
+
 Ont is an autonomous production software factory for managing and improving cloud-based coding agents at scale. Its architecture combines declarative factory definitions, recorded agent activity, sandboxed compute, swappable models and harnesses, and API-first orchestration.
 
 This release is a runnable, single-tenant **control-plane MVP**. The production architecture and integration roadmap extend that foundation into a cloud execution platform.

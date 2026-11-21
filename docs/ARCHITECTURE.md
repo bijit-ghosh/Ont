@@ -93,3 +93,7 @@ The MVP uses SQLite with serialized writes and is intended for one workspace, no
 ## Detailed contracts
 
 See [SYSTEM_DESIGN.md](SYSTEM_DESIGN.md) for plane ownership, transactional delivery, evidence schemas, rollout phases, and proposed service objectives. See [IMPROVEMENT.md](IMPROVEMENT.md) for the implemented offline evaluator and continuous loop.
+
+## Rendered map and reference decisions
+
+[ARCHITECTURE_MAP.md](ARCHITECTURE_MAP.md) maps code modules and boundaries to validation evidence. Regenerate its SVG with `python scripts/render_architecture.py`.
