@@ -41,3 +41,7 @@ These are independent reference projects. Ont's implementation remains MIT-licen
 | Deployment recipe | `Dockerfile`, `compose.yaml` | Historical build passed; current rebuild is a separate check |
 
 See [system design](SYSTEM_DESIGN.md) for durable cloud boundaries and [operations](OPERATIONS.md) for deployment prerequisites.
+
+## Native execution planning
+
+`native/scheduler/` adds a C++20 placement/capacity library and CLI alongside the JavaScript frontend and Python control/evaluation services. The rendered map names this component; its future connection to sandbox provisioning remains an adapter boundary. See [performance and elasticity](PERFORMANCE.md).

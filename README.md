@@ -78,3 +78,7 @@ See [docs/OPERATIONS.md](docs/OPERATIONS.md) for production settings, health che
 ## Continuous improvement and concrete design
 
 [System design](docs/SYSTEM_DESIGN.md) defines service boundaries, delivery semantics, evidence contracts, and rollout gates. [Improvement guide](docs/IMPROVEMENT.md) describes the implemented paired evaluator, UCB learning primitive, continuous dataset watcher, and production promotion design. These modules evaluate supplied evidence; real model training and autonomous policy deployment require additional integrations.
+
+## Frontend, control plane, and native execution planning
+
+Ont uses JavaScript for the browser, Python for workflow management and evaluation, and C++20 for the new placement/capacity planner. [Performance and elasticity](docs/PERFORMANCE.md) explains the stack boundaries, measured local scheduling overhead, and warm-sandbox integration design. The native planner is tested separately; it does not yet provision an elastic sandbox fleet.

@@ -65,3 +65,7 @@ Advance only when the previous phase's failure recovery and data isolation are t
 ## Proposed service objectives to validate
 
 API p95 under 300 ms at the declared workspace workload; no lost acknowledged run records; restore RPO of one backup interval and RTO under 30 minutes; no duplicate PRs in delivery fault injection; all accepted changes linked to exact-commit verification; no promotion on missing evidence. These are proposed targets, not measured SLAs. The included concurrency test is a 100-run local synthetic check, not a production capacity benchmark.
+
+## Polyglot execution and elasticity
+
+[PERFORMANCE.md](PERFORMANCE.md) records the repository breakdown, native scheduling component, latency classes, and warm-pool integration contract. Native recommendations are not wired to the Python worker yet.

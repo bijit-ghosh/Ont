@@ -17,3 +17,7 @@ GitHub Actions were checked against their published latest releases and updated 
 5. Rebuild the container, validate its runtime, review advisories and licenses, then use the matching commit's CI results before release.
 
 An outdated-package check is not a vulnerability audit. This release records compatibility evidence; no clean vulnerability-scan claim is made. Rebuild images for OS security fixes and use your deployment scanner for the actual built image.
+
+## Native build tooling
+
+The release gate requires a C++20 compiler and address/undefined-behavior sanitizer support (`c++`, GCC or Clang). The native module has no external library dependencies. GitHub's Ubuntu runner supplies the compiler; local operators must install compatible build tools before running the full gate. The control-plane Docker runtime remains Python-only because the planner is a separate component, not a linked runtime dependency.

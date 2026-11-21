@@ -54,3 +54,7 @@ These are release gates to validate, not claims that those integrations are alre
 ## Improvement process operations
 
 Run the dataset watcher as a separate unprivileged process with read-only dataset access and a writable report directory. Give it no admin token, provider keys, or deployment permission. Use your process supervisor to restart on failure; SIGTERM stops cleanly. Monitor rejected datasets and report age. Do not interpret a quiet inbox as evidence of ongoing model improvement.
+
+## Native planner operations
+
+Run the complete release gate on a build host with C++20 tooling. The native planner is a pure advisory component; deploying the existing Compose recipe does not enable warm pools or autoscaling. Before connecting its recommendations, implement atomic leases, cooldown, ready-capacity telemetry, quota enforcement, and provider failure recovery as specified in [PERFORMANCE.md](PERFORMANCE.md).
