@@ -20,7 +20,7 @@ Run dependency advisory checks separately from compatibility tests. Rebuild imag
 
 ## Native build tooling
 
-The release gate requires a C++20 compiler and address/undefined-behavior sanitizer support (`c++`, GCC or Clang). The native module has no external library dependencies. GitHub's Ubuntu runner supplies the compiler; local operators must install compatible build tools before running the full gate. The control-plane Docker runtime remains Python-only because the planner is a separate component, not a linked runtime dependency.
+The release gate requires a Rust toolchain with rustfmt and Clippy. The native module has no external library dependencies. CI installs the Rust toolchain and its formatting/lint components; local operators need rustup and Cargo before running the full gate. The control-plane Docker runtime remains Python-only because the planner is a separate component, not a linked runtime dependency.
 
 ## Distribution build tools
 

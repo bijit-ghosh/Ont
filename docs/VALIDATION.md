@@ -2,7 +2,7 @@
 
 ## Current release checks
 
-The source gate is `python scripts/validate.py --cycles 3`. The source suite contains **51 Python tests**. Three cycles execute 153 tests, alongside six-view frontend render/escaping/auth/error checks, JavaScript syntax, Python compilation, whitespace checks, native scheduler tests and address/undefined-behavior sanitizer checks. The machine-readable report is `validation-report.json`. Repeated cycles test fixture stability; they are not independent evidence of real-service quality.
+The source gate is `python scripts/validate.py --cycles 3`. The source suite contains **51 Python tests**. Three cycles execute 153 tests, alongside six-view frontend render/escaping/auth/error checks, JavaScript syntax, Python compilation, whitespace checks, native scheduler tests and Rust formatting and Clippy checks. The machine-readable report is `validation-report.json`. Repeated cycles test fixture stability; they are not independent evidence of real-service quality.
 
 | Area | Evidence |
 | --- | --- |
@@ -13,7 +13,7 @@ The source gate is `python scripts/validate.py --cycles 3`. The source suite con
 | Integrations | Controlled model, PR, rollback, OAuth, memory, MCP and spending-contract tests; local Git patch/commit tests |
 | Demo workspace | Isolated fixture states, completed demo and protection against accidental overwrite |
 | Frontend | Six views, escaped output, authenticated API download, login/error behavior and syntax |
-| Native code | Resource fit, scaling bounds, forecast invariants, sanitizers and synthetic placement timing |
+| Native code | Resource fit, scaling bounds, forecast invariants, lint checks and synthetic placement timing |
 | Documentation | Local links/assets exist; README badges and repository identity point to Ont |
 | Distribution | Wheel/sdist build; isolated install loads bundled assets, prepares demo and reports CLI version |
 
@@ -33,6 +33,10 @@ Browser interaction, responsive visual checks, and accessibility testing are sep
 
 ## Reproduce
 
-Install `requirements.lock.txt` and compatible Node/C++ tools; run the complete source gate. For packages, install `requirements-build.txt`, run `python -m build --no-isolation` and `python scripts/package_smoke.py`. For Docker, build `ont-control-plane:validated` and run `python scripts/container_smoke.py ont-control-plane:validated`.
+Install `requirements.lock.txt` and compatible Node/Rust tools; run the complete source gate. For packages, install `requirements-build.txt`, run `python -m build --no-isolation` and `python scripts/package_smoke.py`. For Docker, build `ont-control-plane:validated` and run `python scripts/container_smoke.py ont-control-plane:validated`.
 
 A failed check stops the loop. Fix the cause before rerunning; do not suppress failures or reinterpret retries as success. Build/deployment tooling can require the environment's CA bundle; keep TLS verification enabled and credentials out of artifacts.
+
+## Native Rust migration
+
+The migrated scheduler passes six library tests and two CLI integration tests in both debug and release profiles, including parity with the previous scheduling fixtures and capacity invariants across varied workloads. The gate also checks rustfmt and Clippy with warnings denied. Rust code forbids unsafe blocks; the native source distribution uses a committed Cargo lockfile with no third-party crate dependencies. Current performance must be taken from the Rust benchmark output rather than earlier native timing records.

@@ -17,6 +17,7 @@ jobs:
       - uses: actions/setup-node@v7.1.0
         with:
           node-version: '24'
+      - run: rustup toolchain install stable --profile minimal --component rustfmt --component clippy
       - run: pip install -r requirements.lock.txt
       - run: pip install -r requirements-build.txt
       - run: python -m pip check

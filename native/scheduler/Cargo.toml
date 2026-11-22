@@ -1,0 +1,19 @@
+[package]
+name = "ont-scheduler"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.85"
+license = "MIT"
+description = "Ont memory-safe placement and bounded capacity planner"
+publish = false
+
+[lib]
+name = "ont_scheduler"
+path = "src/lib.rs"
+
+[[bin]]
+name = "ont-scheduler"
+path = "src/main.rs"
+
+[profile.release]
+overflow-checks = true

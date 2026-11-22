@@ -58,14 +58,14 @@ For an empty operational workspace, run `ont serve`. Tokens are optional only fo
 | Access boundaries | Optional tenant database gateway with reader, admin and worker roles |
 | Context | Tenant-scoped embedding retrieval supplied with caller-generated vectors |
 | Improvement | Paired holdout evaluation, continuous dataset reports and a UCB policy-selection primitive |
-| Native planning | C++20 resource-fit selection and bounded capacity recommendations |
+| Native planning | Rust resource-fit selection and bounded capacity recommendations |
 | Local agent tooling | Minimal stdio MCP discovery/capability tool and PKCE transaction helpers |
 
 The default server is one workspace. Tenant routing is a separate entry point. [Deployment requirements](docs/READINESS.md) covers integration setup and environment validation.
 
 ## Architecture
 
-Ont uses **JavaScript** for the browser, **Python** for control and evaluation, and **C++20** for local scheduling decisions. The stack separates factory definitions, data/evidence, compute, inference, evaluation, orchestration/policy, and access/delivery.
+Ont uses **JavaScript** for the browser, **Python** for control and evaluation, and **Rust** for local scheduling decisions. The stack separates factory definitions, data/evidence, compute, inference, evaluation, orchestration/policy, and access/delivery.
 
 - [Layered factory stack](docs/FACTORY_STACK.md)
 - [Module architecture map](docs/ARCHITECTURE_MAP.md)
@@ -86,7 +86,7 @@ The recipe binds to loopback and retains data in a named volume. Remote access r
 
 ## Validate a release
 
-Full validation requires Node.js 24, a C++20 compiler with sanitizer support, Python dependencies, and Git. Docker is additionally required for the container smoke test.
+Full validation requires Node.js 24, a Rust toolchain with rustfmt and Clippy, Python dependencies, and Git. Docker is additionally required for the container smoke test.
 
 ```bash
 python scripts/validate.py --cycles 3
@@ -94,16 +94,16 @@ docker build -t ont-control-plane:validated .
 python scripts/container_smoke.py ont-control-plane:validated
 ```
 
-The CI badge links to Ont's own release checks: Python tests, frontend logic/render checks, native checks/sanitizers, a container build, and full demo HTTP/restart smoke. Reports are retained as workflow artifacts. The project-refinement gate contains 51 Python tests per cycle; use the matching CI result for the source commit being deployed. See [validation evidence](docs/VALIDATION.md).
+The CI badge links to Ont's own release checks: Python tests, frontend logic/render checks, native tests and Clippy checks, a container build, and full demo HTTP/restart smoke. Reports are retained as workflow artifacts. The project-refinement gate contains 51 Python tests per cycle; use the matching CI result for the source commit being deployed. See [validation evidence](docs/VALIDATION.md).
 
 ## Packaging and repository map
 
-Build wheel and source-distribution packages directly from this repository. The wheel carries the Python runtime, `ont` CLI, and browser assets. Native C++ source and developer checks are part of the source distribution/repository, not a precompiled wheel binary.
+Build wheel and source-distribution packages directly from this repository. The wheel carries the Python runtime, `ont` CLI, and browser assets. Native Rust source and developer checks are part of the source distribution/repository, not a precompiled wheel binary.
 
 ```text
 ont/                  Control plane, CLI, demo, evaluation and integration adapters
 web/                  Browser console source
-native/scheduler/     C++20 placement and capacity planner
+native/scheduler/     Rust placement and capacity planner
 tests/                Workflow, tenant, adapter, demo and frontend regression tests
 scripts/              Validation, packaging, backup, diagrams and container checks
 examples/             Factory configuration example

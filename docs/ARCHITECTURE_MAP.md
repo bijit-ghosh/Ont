@@ -38,4 +38,4 @@ See [system design](SYSTEM_DESIGN.md) for durable cloud boundaries and [operatio
 
 ## Native execution planning
 
-`native/scheduler/` adds a C++20 placement/capacity library and CLI alongside the JavaScript frontend and Python control/evaluation services. The rendered map names this component; its future connection to sandbox provisioning remains an adapter boundary. See [performance and elasticity](PERFORMANCE.md).
+`native/scheduler/` adds a Rust placement/capacity library and CLI alongside the JavaScript frontend and Python control/evaluation services. The rendered map names this component; its future connection to sandbox provisioning remains an adapter boundary. See [performance and elasticity](PERFORMANCE.md).

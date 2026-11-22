@@ -1,7 +1,8 @@
 include LICENSE CONTRIBUTING.md SECURITY.md CHANGELOG.md requirements.txt requirements.lock.txt requirements-build.txt package.json Dockerfile compose.yaml
 recursive-include web *.html *.css *.js
 recursive-include docs *.md *.svg *.png
-recursive-include native *.hpp *.cpp *.sh
+recursive-include native *.rs *.toml *.lock *.sh
 recursive-include scripts *.py
 recursive-include tests *.py *.mjs
 recursive-include examples *.json *.md
+prune native/scheduler/target

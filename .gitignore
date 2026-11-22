@@ -9,3 +9,4 @@ validation-report.json
 build/
 dist/
 *.egg-info/
+/native/scheduler/target/

@@ -8,14 +8,14 @@
 | `ont/app.py` | Authentication, workflow state, approvals, artifacts | Keep Python for control-plane productivity. Split storage and domain services before adding tenants. SQLite's serialized writers make this a single-workspace deployment. |
 | `ont/worker.py` | Docker launch, heartbeat, result transport | Reference integration only. Its polling and fresh-container startup are incompatible with microsecond end-to-end latency. Replace provisioning with a warm-pool broker for low-latency assignment. |
 | `ont/improvement.py` | Statistical evaluation and policy learning | Keep Python for evaluation and future ML libraries. Run outside request paths. |
-| `native/scheduler/` | Placement and capacity recommendations | New dependency-free C++20 component for predictable local decision overhead. |
-| `scripts/`, `tests/` | Release gates and operations | Validate both Python and native paths, including address/undefined-behavior sanitizers. |
+| `native/scheduler/` | Placement and capacity recommendations | New dependency-free Rust component for predictable local decision overhead. |
+| `scripts/`, `tests/` | Release gates and operations | Validate both Python and native paths, including debug/release tests and Clippy checks. |
 
-Adding a language is justified by a measured hot path, not by a blanket rewrite. The frontend already uses JavaScript; Python owns control and evaluation; C++ now implements native scheduling decisions. No new distributed service is required just to call the planner.
+Adding a language is justified by a measured hot path, not by a blanket rewrite. The frontend already uses JavaScript; Python owns control and evaluation; Rust now implements native scheduling decisions. No new distributed service is required just to call the planner.
 
 ## Native planner contract
 
-`planner.hpp` exposes:
+`native/scheduler/src/lib.rs` exposes:
 
 - `select`: scans ready, unleased slots and returns the index of a fitting slot with minimum normalized-free resource score. The current score is a simple sum of spare CPU millicores and memory MiB; production profiles need workload-specific weighting. It is not a global bin-packing optimum.
 - `Forecast.observe`: EWMA of observed arrivals per second. It smooths rate estimates but does not infer seasonality or claim prediction accuracy.
@@ -23,7 +23,7 @@ Adding a language is justified by a measured hot path, not by a blanket rewrite.
 
 The default policy is 1–100 slots, at most 10 changed per decision, 70% target utilization, a 10-second backlog drain horizon, and 20% headroom. Inputs must be finite, nonnegative, and internally consistent. A real controller must add cooldown, readiness/failure accounting, hysteresis, per-tenant quotas, and measured provider startup times. The component does not reserve resources, authorize tasks, launch containers, or persist decisions.
 
-Compile `main.cpp` with `c++ -std=c++20 -O2`. The CLI accepts lines of `arrival_rate service_seconds queued busy current` and returns desired capacity as JSON. It uses the supplied arrival rate; callers can supply EWMA output from the library. Run `bash native/scheduler/check.sh` for tests, sanitizers, and a local placement benchmark.
+Build with `cargo build --locked --offline --release --manifest-path native/scheduler/Cargo.toml`. The CLI accepts lines of `arrival_rate service_seconds queued busy current` and returns desired capacity as JSON. It uses the supplied arrival rate; callers can supply EWMA output from the library. Run `bash native/scheduler/check.sh` for formatting, Clippy, debug/release tests, and a local placement benchmark.
 
 ## Latency classes
 
@@ -53,3 +53,11 @@ MicroVM snapshots, gVisor runtimes, or equivalent isolation providers are adapte
 ## Current boundary
 
 The native module is independently buildable and tested. Its output is advisory and is not connected to the existing Docker worker. Warm-pool provisioning and predictive autoscaling belong to the broker integration. Use integration fault tests, representative mixed workloads, provider quotas, and real cold/warm timing before enabling the broker in production.
+
+## Rust implementation
+
+The scheduler is a dependency-free Rust crate with `#![forbid(unsafe_code)]` in both library and CLI. Planning functions use typed inputs and return errors for invalid demand or resource requests. Resource scores use widened arithmetic; capacity changes use saturating arithmetic. Release builds retain overflow checks.
+
+`bash native/scheduler/check.sh` checks formatting, runs Clippy with warnings denied, executes library and CLI tests in debug and release modes, and runs the optimized placement microbenchmark. Cargo uses the committed lockfile and offline mode after toolchain installation. The benchmark uses `std::hint::black_box` to keep the measured scan from being optimized away. Tests cover parity fixtures, capacity invariants over multiple workloads, invalid samples, stable tie-breaking, extreme counters, and streamed CLI requests.
+
+This replaces the prior native implementation without changing the Python worker protocol or activating a sandbox broker. Rust source is included in the source distribution; the Python wheel does not embed a scheduler binary.

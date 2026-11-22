@@ -9,7 +9,7 @@
 | Git source archive | Tracked repository state, including CI configuration | Full repository handoff |
 | Docker image | Locked Python runtime and browser assets | Reproducible service deployment |
 
-Build and install artifacts from this repository. Wheel metadata uses the distribution name `ont-software-factory`; the installed command is `ont`. The JavaScript console is bundled with the wheel, not published to npm. C++ source is supplied separately; the wheel does not contain a native scheduler binary.
+Build and install artifacts from this repository. Wheel metadata uses the distribution name `ont-software-factory`; the installed command is `ont`. The JavaScript console is bundled with the wheel, not published to npm. Rust source is supplied separately; the wheel does not contain a native scheduler binary.
 
 ## Build from source
 

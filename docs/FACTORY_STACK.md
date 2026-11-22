@@ -10,13 +10,13 @@ Ont organizes its software factory into seven layers. The diagram combines the i
 | Orchestration & policy | Stage lifecycle, human approvals, tenant-role gateway, bounded fan-out | Tenant routing uses separate database files. Parallel execution is local, not a durable distributed scheduler. |
 | Evaluation & learning | Paired held-out evaluation, continuous reports, UCB selector, review proposals | Reports establish eligibility for review; production promotion is not automated. |
 | Inference & agents | Allowlisted model proposal client, patch workflow, usage reservations | A configured provider and trusted worker adapter are required. Local reservations do not enforce provider-side spending limits. |
-| Compute & elasticity | Docker execution/verification, native C++ placement, capacity recommendations | The native planner is advisory; it is not connected to warm-pool provisioning or an elastic cloud controller. |
+| Compute & elasticity | Docker execution/verification, native Rust placement, capacity recommendations | The native planner is advisory; it is not connected to warm-pool provisioning or an elastic cloud controller. |
 | Data & evidence | Run history, hashed artifacts, scoped embedding retrieval, verification adapter | Text hashes are not signatures. Independent verifier receipts are not yet enforced by the workflow server. |
 | Factories as code | Validated JSON definitions, immutable snapshots, repository allowlists, budgets and gates | Current definitions support the existing stage lifecycle; arbitrary declarative DAGs and triggers remain future work. |
 
 ## Cross-cutting concerns
 
-JavaScript implements the operator console. Python implements control-plane workflows, integration adapters, and evaluation. C++ handles local placement and scaling decisions. Permissions, evidence provenance, usage accounting, and observability apply across layers.
+JavaScript implements the operator console. Python implements control-plane workflows, integration adapters, and evaluation. Rust handles local placement and scaling decisions. Permissions, evidence provenance, usage accounting, and observability apply across layers.
 
 ## Future cloud plane
 

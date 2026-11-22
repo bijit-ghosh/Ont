@@ -11,7 +11,7 @@ Use the checks below to prepare an environment for its intended workload. Run th
 | Delivery | Local Git patch tests and mocked PR/rollout contracts | Authorized live PR and deployment/rollback qualification |
 | Model execution | Structured-response and endpoint contract tests | Provider credentials, real quality/billing evidence and adapter wiring |
 | Learning | Paired evaluator, held-out gates, idempotent watcher and UCB tests | Trusted real outcomes, candidate generation and controlled promotion |
-| Native scheduling | C++ checks, sanitizers and resident-memory microbenchmark | Broker integration, warm pools, forecast error and realistic concurrency |
+| Native scheduling | Rust debug/release tests and Clippy checks and resident-memory microbenchmark | Broker integration, warm pools, forecast error and realistic concurrency |
 | Packaging | Wheel/sdist recipes and isolated install smoke | Matching build/CI results and artifact integrity |
 
 [VALIDATION.md](VALIDATION.md) describes the release checks and measurement boundaries.
