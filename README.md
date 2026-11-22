@@ -1,6 +1,4 @@
-# Ont · Software Factory
-
-**Turn engineering intent into reviewable, verified software delivery.**
+# Ont · AI Engineering Platform
 
 [![Ont release checks](https://github.com/bijit-ghosh/Ont/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/bijit-ghosh/Ont/actions/workflows/ci.yml)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
@@ -11,13 +9,7 @@
 
 ## About
 
-Ont is a software factory for turning engineering intent into reviewable software changes. It coordinates coding agents, repository work, verification evidence, human approvals, and delivery through one configurable control plane.
-
-Built for teams that want to own their development workflow, Ont supports model and harness choice, self-hosted operation, and an inspectable record of each stage. Its goal is to make agent-assisted delivery faster to operate, easier to review, and measurable enough to improve.
-
-The current release includes the operator console, persistent workflows, evaluation tools, a native scheduling planner, and optional integration adapters. Live code generation and deployment require configured providers and execution infrastructure; the demo identifies simulated work explicitly.
-
-Created and maintained by **Bijit Ghosh** under the MIT license.
+**Ont is an AI engineering platform for building, operating, and improving software and infrastructure.**
 
 ## Mission
 

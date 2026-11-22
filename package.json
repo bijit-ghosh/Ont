@@ -6,6 +6,6 @@
     "dev": "python -m scripts.dev",
     "test": "python -m unittest discover -s tests -v"
   },
-  "description": "Ont \u2014 autonomous production software factory",
+  "description": "Ont is an AI engineering platform for building, operating, and improving software and infrastructure.",
   "license": "MIT"
 }

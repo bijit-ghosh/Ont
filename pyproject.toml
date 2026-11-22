@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "ont-software-factory"
 version = "0.1.0"
-description = "Ont software factory: orchestrate coding agents, review evidence, and improve delivery"
+description = "Ont is an AI engineering platform for building, operating, and improving software and infrastructure."
 readme = "README.md"
 requires-python = ">=3.12"
 license = "MIT"
