@@ -12,7 +12,7 @@ services:
     volumes:
       - ont-data:/app/data
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:3000/health/ready', timeout=3)"]
+      test: ["CMD", "python", "-c", "import os,urllib.request; host=os.environ['ONT_ALLOWED_HOSTS'].split(',')[0].strip(); urllib.request.urlopen(urllib.request.Request('http://127.0.0.1:3000/health/ready',headers={'Host':host}),timeout=3)"]
       interval: 30s
       timeout: 5s
       retries: 3

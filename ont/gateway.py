@@ -27,10 +27,13 @@ def application():
         if not (path.startswith('/api') or path=='/openapi.json'):
             return await default(scope,receive,send)
         try:
-            p=principals.authenticate(request.headers.get('authorization',''))
-            if not principals.authorize(p,path,scope['method']):raise PermissionError('Role does not authorize this operation')
-        except PermissionError as e:
-            return await JSONResponse({'detail':str(e)},403)(scope,receive,send)
+            authorization=request.headers.get('authorization','')
+            if not authorization.startswith('Bearer '):raise PermissionError('Authentication required')
+            p=principals.authenticate(authorization)
+        except PermissionError:
+            return await JSONResponse({'detail':'Authentication required'},401,headers={'WWW-Authenticate':'Bearer','Cache-Control':'no-store'})(scope,receive,send)
+        if not principals.authorize(p,path,scope['method']):
+            return await JSONResponse({'detail':'Role does not authorize this operation'},403,headers={'Cache-Control':'no-store'})(scope,receive,send)
         new=dict(scope)
         new['headers']=[(k,v) for k,v in scope['headers'] if k.lower()!=b'authorization']+[(b'authorization',('Bearer '+(worker if p['role']=='worker' else admin)).encode())]
         return await apps[p['tenant']](new,receive,send)

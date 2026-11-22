@@ -1,7 +1,7 @@
 """Review-first coding workflow. Provider and executor remain explicitly configured."""
 from pathlib import Path
 import tempfile
-from .delivery import checkout,command,verify,GitHubDelivery
+from .delivery import checkout,command,verify,GitHubDelivery,SHA
 
 
 def build_change(repository,source_commit,destination,allowed_repositories,model,brief,context,
@@ -32,9 +32,17 @@ def build_change(repository,source_commit,destination,allowed_repositories,model
 def publish_draft(result,repository,allowed_repositories,branch,base,body_path):
     """Explicit delivery step after review. Credentials belong to trusted host only."""
     delivery=GitHubDelivery(repository,allowed_repositories)
+    evidence=result.get('verification',{})
+    commit=result.get('commit','')
+    if not SHA.fullmatch(commit) or evidence.get('passed') is not True or evidence.get('commit')!=commit:
+        raise ValueError('Delivery requires passing verification for the exact commit')
     if not branch.startswith('ont/'):raise ValueError('Ont delivery branches must start with ont/')
     # Validate branch with Git before a remote write.
     command(['git','check-ref-format','--branch',branch])
     if command(['git','rev-parse','HEAD'],result['checkout'])!=result['commit']:raise ValueError('Delivery commit changed')
-    command(['git','push','origin',result['commit']+':refs/heads/'+branch],result['checkout'])
+    expected='https://github.com/'+repository+'.git'
+    remote=command(['git','remote','get-url','--push','origin'],result['checkout'])
+    if remote not in (expected,expected.removesuffix('.git')):
+        raise ValueError('Delivery remote does not match authorized repository')
+    command(['git','push',expected,result['commit']+':refs/heads/'+branch],result['checkout'])
     return delivery.draft_pr(branch,base,'Ont: '+result['summary'][:150],body_path)

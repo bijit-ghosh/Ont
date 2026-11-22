@@ -26,7 +26,7 @@ def verify(checkout_path,commit,image,test_argv,timeout=120):
     root=Path(checkout_path).resolve()
     if not SHA.fullmatch(commit) or command(['git','rev-parse','HEAD'],root)!=commit:raise ValueError('Verification commit mismatch')
     if command(['git','status','--porcelain','--untracked-files=all'],root):raise ValueError('Verification requires a clean committed checkout')
-    if '@sha256:' not in image or not test_argv or any(not isinstance(s,str) for s in test_argv):raise ValueError('Pinned image and command array required')
+    if not re.fullmatch(r'[A-Za-z0-9._:/-]+@sha256:[a-f0-9]{64}',image) or not test_argv or any(not isinstance(s,str) or not s for s in test_argv):raise ValueError('Pinned image and command array required')
     subprocess.run(['docker','run','--rm','--network=none','--read-only','--user=65534:65534','--cap-drop=ALL','--security-opt=no-new-privileges',
         '--memory=2g','--cpus=2','--pids-limit=128','--tmpfs=/tmp:rw,nosuid,size=256m','--mount',f'type=bind,source={root},target=/src,readonly','--workdir=/src',image,*test_argv],check=True,timeout=timeout,capture_output=True)
     return {'passed':True,'commit':commit,'command':json.dumps(test_argv),'image':image,'independent':True}

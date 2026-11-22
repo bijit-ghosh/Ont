@@ -98,7 +98,7 @@ def create_app(db_path=None):
         # Token remains in environment/session memory, never in shipped source.
         if req.url.path.startswith('/api') or req.url.path == '/openapi.json':
             worker = req.url.path.startswith('/api/worker/')
-            key = os.getenv('ONT_WORKER_TOKEN' if worker else 'ONT_ADMIN_TOKEN', '')
+            key = worker_token if worker else admin_token
             if worker and not key:
                 return JSONResponse({'detail':'Worker access disabled; configure ONT_WORKER_TOKEN'},503)
             if key and not hmac.compare_digest(req.headers.get('authorization','').encode(), ('Bearer '+key).encode()):
@@ -107,8 +107,13 @@ def create_app(db_path=None):
             if origin and origin != str(req.base_url).rstrip('/'):
                 return JSONResponse({'detail':'Cross-origin request rejected'},403)
             length = req.headers.get('content-length')
-            if length is not None and (not length.isdigit() or int(length) > 1_100_000):
-                return JSONResponse({'detail':'Invalid or excessive request size'},413)
+            # Compare bounded decimal text before conversion: arbitrarily long
+            # Content-Length values must not trigger Python's integer digit limit.
+            if length is not None:
+                decimal = length.lstrip('0') or '0'
+                if (not length.isascii() or not length.isdigit() or len(decimal) > 7
+                        or (len(decimal) == 7 and decimal > '1100000')):
+                    return JSONResponse({'detail':'Invalid or excessive request size'},413)
             chunks = []; size = 0
             async for chunk in req.stream():
                 size += len(chunk)
@@ -138,7 +143,7 @@ def create_app(db_path=None):
             runs = [public(r) for r in c.execute('SELECT * FROM runs ORDER BY created DESC LIMIT ? OFFSET ?', (limit,offset))]
             config = json.loads(c.execute("SELECT value FROM settings WHERE key='factory'").fetchone()[0])
         return {'runs':runs,'factory':config,'stages':STAGES,
-                'auth_enabled':bool(os.getenv('ONT_ADMIN_TOKEN')), 'worker_enabled':bool(os.getenv('ONT_WORKER_TOKEN'))}
+                'auth_enabled':bool(admin_token), 'worker_enabled':bool(worker_token)}
     @app.put('/api/factory')
     def factory(data: Factory):
         with db() as c:

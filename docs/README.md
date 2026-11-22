@@ -1,6 +1,8 @@
 # Ont documentation index
 
 - [Factory stack](FACTORY_STACK.md): layered architecture and presentation graphic
+- [Presentation release report](CLIENT_RELEASE.md): swarm checks, fixes and evidence limits
+- [Client presentation](PRESENTATION.md): repeatable fixture and walkthrough
 - [Product](PRODUCT.md): scope and outcomes
 - [Architecture map](ARCHITECTURE_MAP.md): module boundaries
 - [System design](SYSTEM_DESIGN.md): production service contracts

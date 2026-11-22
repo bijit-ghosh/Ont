@@ -8,7 +8,7 @@ import time
 p=argparse.ArgumentParser();p.add_argument('--cycles',type=int,default=3);a=p.parse_args()
 if not 1<=a.cycles<=20:p.error('cycles must be between 1 and 20')
 root=Path(__file__).resolve().parents[1]
-checks=[[sys.executable,'-m','unittest','discover','-s','tests','-v'],[sys.executable,'-m','compileall','-q','ont','scripts'],['node','--check','web/app.js'],['git','diff','--check'],['bash','native/scheduler/check.sh']]
+checks=[[sys.executable,'-m','unittest','discover','-s','tests','-v'],[sys.executable,'-m','compileall','-q','ont','scripts'],['node','--check','web/app.js'],['node','tests/frontend_release.mjs'],['git','diff','--check'],['bash','native/scheduler/check.sh']]
 report={'started':time.time(),'cycles':a.cycles,'checks':[],'passed':False}
 try:
     for cycle in range(a.cycles):

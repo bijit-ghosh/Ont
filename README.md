@@ -82,3 +82,7 @@ See [docs/OPERATIONS.md](docs/OPERATIONS.md) for production settings, health che
 ## Frontend, control plane, and native execution planning
 
 Ont uses JavaScript for the browser, Python for workflow management and evaluation, and C++20 for the new placement/capacity planner. [Performance and elasticity](docs/PERFORMANCE.md) explains the stack boundaries, measured local scheduling overhead, and warm-sandbox integration design. The native planner is tested separately; it does not yet provision an elastic sandbox fleet.
+
+## Client presentation
+
+Run `python -m scripts.presentation` for an isolated, labeled demonstration workspace. [Presentation guide](docs/PRESENTATION.md) provides the walkthrough and distinguishes demonstrated behavior from live integration requirements.

@@ -47,3 +47,7 @@ A fresh non-root Docker image built successfully with the exact dependency lock.
 The first smoke-test attempt exposed case-sensitive header lookup in the test script; the HTTP header assertion was corrected to use case-insensitive semantics and the test passed. This was a test-harness defect, not evidence of an application HTTP failure.
 
 Browser preview was attempted again, but the managed relay timed out before opening port 4173. Browser interaction and accessibility therefore remain unverified. Live model calls, GitHub PR delivery, Kubernetes rollout, SSO/OAuth completion, and provider spending enforcement still require configured services and separate qualification. Passing adapter mocks does not establish those live outcomes.
+
+## Presentation swarm gate
+
+Four parallel reviews added authentication, delivery, frontend and deployment regression coverage. The current complete gate passed 49 Python tests across three cycles plus frontend six-view render checks and native checks/sanitizers. The production-configured Docker smoke now covers the complete demo lifecycle and both review gates. See [CLIENT_RELEASE.md](CLIENT_RELEASE.md) for fixes, evidence boundaries and presentation readiness, and [PRESENTATION.md](PRESENTATION.md) for the isolated walkthrough.

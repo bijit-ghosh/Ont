@@ -30,11 +30,21 @@ try:call('/api/overview',auth=False);raise AssertionError('Unauthenticated API a
 except urllib.error.HTTPError as e:assert e.code==401
 _,body,_=call('/api/runs','POST',{'title':'Container smoke test','brief':'Validate production HTTP and restart persistence.','mode':'demo'})
 r=json.loads(body);rid=r['id']
-_,body,_=call('/api/runs/'+rid+'/action','POST',{'action':'simulate'})
-assert json.loads(body)['stage']==1
+for stage in range(5):
+    _,body,_=call('/api/runs/'+rid+'/action','POST',{'action':'simulate'})
+    result=json.loads(body)
+    if stage in [1,3]:
+        assert result['status']=='awaiting_approval'
+        try:
+            call('/api/runs/'+rid+'/action','POST',{'action':'simulate'})
+            raise AssertionError('Approval gate bypassed')
+        except urllib.error.HTTPError as e:assert e.code==409
+        _,body,_=call('/api/runs/'+rid+'/action','POST',{'action':'approve'})
+        result=json.loads(body)
+assert result['status']=='demo_completed' and result['cost']==0
 _,body,_=call('/api/runs/'+rid)
-assert len(json.loads(body)['artifacts'])==1
-print(json.dumps({'id':rid,'checks':'assets, health, auth, create, stage, artifact'}))
+assert len(json.loads(body)['artifacts'])==5
+print(json.dumps({'id':rid,'checks':'assets, health, auth, full demo lifecycle, both approval gates, 5 artifacts, zero demo cost'}))
 '''
 try:
     docker('volume','create',volume)
@@ -43,7 +53,7 @@ try:
            '--mount','type=volume,source='+volume+',target=/app/data',image)
     ready();result=json.loads(docker('exec',name,'python','-c',check_code).stdout)
     docker('restart',name);ready()
-    restore="import urllib.request,json,os; r=json.load(urllib.request.urlopen(urllib.request.Request('http://127.0.0.1:3000/api/runs/"+result['id']+"',headers={'Authorization':'Bearer '+os.environ['ONT_ADMIN_TOKEN']}))); assert r['stage']==1 and len(r['artifacts'])==1; print('Restart persistence passed')"
+    restore="import urllib.request,json,os; r=json.load(urllib.request.urlopen(urllib.request.Request('http://127.0.0.1:3000/api/runs/"+result['id']+"',headers={'Authorization':'Bearer '+os.environ['ONT_ADMIN_TOKEN']}))); assert r['status']=='demo_completed' and r['stage']==4 and len(r['artifacts'])==5; print('Restart persistence passed')"
     docker('exec',name,'python','-c',restore)
     print(json.dumps({'passed':True,'image':image,'http_checks':result['checks'],'restart_persistence':True,'network':'none'}))
 finally:
