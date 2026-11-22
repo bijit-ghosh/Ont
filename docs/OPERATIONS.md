@@ -11,7 +11,7 @@ This release hardens the single-workspace control plane. Autonomous coding still
 | ONT_ENV | Set to `production` to enable fail-closed startup checks. Compose sets this. |
 | ONT_ADMIN_TOKEN | Required in production, at least 32 characters; keep in a secret manager. |
 | ONT_WORKER_TOKEN | Required in production, at least 32 characters, distinct from admin token. Rotate by restarting server and workers together. |
-| ONT_ALLOWED_HOSTS | Explicit comma-separated hostnames without schemes or ports; wildcard forbidden in production. Include `127.0.0.1` for container health checks plus the actual ingress hostname. |
+| ONT_ALLOWED_HOSTS | Explicit comma-separated hostnames without schemes or ports; wildcard forbidden in production. The Compose health probe sends a configured allowed Host; use the actual ingress hostname. |
 | ONT_DB | Persistent writable SQLite path. Keep database, WAL, and SHM together. Use one control-plane deployment per database. |
 | ONT_URL | Worker control-plane URL; use TLS across hosts. |
 | ONT_REPOSITORY | Reference worker repository allowlist. A mismatch fails the stage. |
@@ -21,7 +21,7 @@ This release hardens the single-workspace control plane. Autonomous coding still
 | Approval stages | Spec/review gates; changes apply only to new runs. |
 | Overview limit/offset | API list defaults to 100 runs; maximum page size 500. UI currently displays the first page. |
 
-Terminate HTTPS at the ingress. Trust forwarded headers only from that ingress, preserve the original Host, and impose connection/request rate limits there. Shared bearer credentials suit one trusted operator group; individual permissions and multi-tenancy require a separate identity implementation.
+Terminate HTTPS at the ingress. Trust forwarded headers only from that ingress, preserve the original Host, and impose connection/request rate limits there. Shared bearer credentials suit one trusted operator group; the optional tenant gateway supplies logical database separation and roles, while individual SSO and stronger multi-tenant guarantees require additional implementation.
 
 ## Health and recovery
 
@@ -47,7 +47,7 @@ To restore: stop the service and workers, retain the current database directory 
 - Harness sandbox escape assessment, real model cost reconciliation, repository provisioning, and end-to-end PR delivery.
 - Independent verification against exact repository commits and realistic acceptance tests.
 - TLS ingress, abuse controls, monitoring/alert delivery, secret rotation, and backup restoration in the actual deployment.
-- Individual identity/RBAC, stronger audit integrity, tenant isolation, and durable cloud execution before offering a multi-tenant service.
+- Individual SSO identity, stronger audit integrity, deployed tenant-isolation review, and durable cloud execution before offering a multi-tenant service.
 
 These are release gates to validate, not claims that those integrations are already operational.
 

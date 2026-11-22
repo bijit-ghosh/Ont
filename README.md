@@ -1,88 +1,124 @@
 # Ont · Software Factory
 
+**Turn engineering intent into reviewable, verified software delivery.**
+
+[![Ont release checks](https://github.com/bijit-ghosh/Ont/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/bijit-ghosh/Ont/actions/workflows/ci.yml)
+[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
+[Quickstart](#quickstart) · [Architecture](docs/FACTORY_STACK.md) · [Packages](docs/PACKAGING.md) · [Client walkthrough](docs/PRESENTATION.md) · [Validation](docs/CLIENT_RELEASE.md) · [Documentation](docs/README.md)
+
 ![Ont Software Factory Stack](docs/assets/ont-factory-stack.png)
 
-[Factory stack](docs/FACTORY_STACK.md) · [Architecture map](docs/ARCHITECTURE_MAP.md) · [System design](docs/SYSTEM_DESIGN.md) · [Validation](docs/VALIDATION.md) · [Dependency maintenance](docs/DEPENDENCIES.md)
+## About
 
-Ont is an autonomous production software factory for managing and improving cloud-based coding agents at scale. Its architecture combines declarative factory definitions, recorded agent activity, sandboxed compute, swappable models and harnesses, and API-first orchestration.
+Ont is an autonomous software factory project for teams building with coding agents. It brings work orders, factory policy, execution evidence, human decisions, and improvement experiments into one inspectable delivery system. Teams can choose their model and harness, retain control of their repositories, and trace how a requested outcome moves toward a reviewed change.
 
-This release is a runnable, single-tenant **control-plane MVP**. The production architecture and integration roadmap extend that foundation into a cloud execution platform.
+The current release provides a persistent control plane, a working operator console, a native scheduling planner, evaluation tools, and optional integration adapters. Live code generation and deployment require configured providers and execution infrastructure; the included demo clearly labels simulated work.
 
-## What works
+Created and maintained by **Bijit Ghosh** under the MIT license.
 
-- Responsive operator dashboard: work orders, activity, artifacts, approvals, factory configuration, stack view, and outcome metrics.
-- Persistent SQLite storage; immutable configuration snapshots per run.
-- Triage → spec → build → review → verify workflow, with configurable spec/review gates.
-- Explicit demo mode; simulated artifacts never count as live completions.
-- Worker claim/heartbeat/result API, exclusive leases, cancellation and expired-lease recovery.
-- Required stage evidence; verification JSON required to complete live runs.
-- Accounted cost limits, artifact SHA-256 hashes, and JSON workspace export.
-- Factory definition import/export and machine-readable OpenAPI at `/openapi.json`.
-- Docker Compose deployment and an external Docker harness bridge.
+## Mission
 
-## Run locally
+Make agent-assisted software delivery dependable: every change should have a clear purpose, accountable cost, inspectable evidence, and an appropriate approval path. Improve the factory through measured outcomes and reviewed changes to its own configuration.
 
-Requires Python 3.12+; Node is optional (only used for `npm run dev` convenience).
+## Start with your goal
+
+| Goal | Entry point |
+| --- | --- |
+| Present the workflow without external credentials | `ont demo` and the [meeting guide](docs/PRESENTATION.md) |
+| Run your team's control plane | `ont serve` and [configuration](docs/CONFIGURATION.md) |
+| Connect a coding model and repository | [Integration setup](docs/INTEGRATIONS.md) and [worker protocol](docs/WORKER.md) |
+| Understand the stack and execution boundaries | [Factory stack](docs/FACTORY_STACK.md) and [system design](docs/SYSTEM_DESIGN.md) |
+| Evaluate improvements before promotion | [Improvement guide](docs/IMPROVEMENT.md) |
+| Package or deploy Ont | [Packaging](docs/PACKAGING.md) and [operations](docs/OPERATIONS.md) |
+
+## Quickstart
+
+Python 3.12+, Git, and access to the Python package index are required. From Bash:
 
 ```bash
-cd /workspace/ont
+git clone https://github.com/bijit-ghosh/Ont.git
+cd Ont
 python -m venv .venv
 . .venv/bin/activate
-pip install -r requirements.lock.txt
-python -m uvicorn ont.app:app --host 127.0.0.1 --port 3000
+python -m pip install -r requirements.lock.txt
+python -m pip install --no-deps .
+ont demo
 ```
 
-Open `http://127.0.0.1:3000`. Without tokens this is a local development instance: the admin API is open and the worker API is disabled. Do not expose this mode publicly. The default repository identifier is `bijit-ghosh/Ont`.
+On Windows PowerShell, replace the activation command with `.\.venv\Scripts\Activate.ps1`.
 
-Click **Explore a demo workflow**, simulate each stage, inspect artifacts, and approve spec and review. No model calls, repository changes, test execution, merges, or deployments happen in demo mode.
+Open `http://127.0.0.1:3000` on the machine running Ont. The demo uses its own database and includes queued work, approval checkpoints, and completed illustrative runs. It does not call a model or alter a repository. Existing presentation databases are preserved; use `ont demo --db data/another-demo.sqlite3` for a fresh workspace.
 
-For a token-protected instance, set distinct `ONT_ADMIN_TOKEN` and `ONT_WORKER_TOKEN` environment variables before launching. Enter the admin token through **Workspace access**. The UI retains it in tab memory only. Worker setup is in [docs/WORKER.md](docs/WORKER.md).
+For an empty operational workspace, run `ont serve`. Source-checkout commands such as `python -m scripts.presentation` remain supported. Tokens are optional only for loopback development; configure production credentials before remote use.
+
+## What you can use today
+
+| Capability | Behavior |
+| --- | --- |
+| Operator console | Work orders, approvals, activity, artifacts, configuration, stack view and metrics |
+| Workflow control | Triage, spec, build, review and verify; explicit gates, cancellation and stale-lease rejection |
+| Durable records | SQLite persistence, configuration snapshots, artifact hashes, export and consistent backups |
+| Execution interfaces | Worker claims/heartbeats/results; optional immutable checkout, patch and container-verification adapters |
+| Delivery adapters | Explicit draft-PR publication and allowlisted Kubernetes rollout/undo |
+| Access boundaries | Optional tenant database gateway with reader, admin and worker roles |
+| Context | Tenant-scoped embedding retrieval supplied with caller-generated vectors |
+| Improvement | Paired holdout evaluation, continuous dataset reports and a UCB policy-selection primitive |
+| Native planning | C++20 resource-fit selection and bounded capacity recommendations |
+| Local agent tooling | Minimal stdio MCP discovery/capability tool and PKCE transaction helpers |
+
+The default server is one workspace. Tenant routing is a separate entry point. Adapter contract tests are not live-service qualification. [Readiness](docs/READINESS.md) describes the exact boundaries, including SSO, provider quotas, browser validation and cloud execution work still required.
+
+## Architecture
+
+Ont uses **JavaScript** for the browser, **Python** for control and evaluation, and **C++20** for local scheduling decisions. The stack separates factory definitions, data/evidence, compute, inference, evaluation, orchestration/policy, and access/delivery.
+
+- [Layered factory stack](docs/FACTORY_STACK.md)
+- [Module architecture map](docs/ARCHITECTURE_MAP.md)
+- [Service contracts and rollout stages](docs/SYSTEM_DESIGN.md)
+- [Latency and elasticity boundaries](docs/PERFORMANCE.md)
+
+The planner's local microbenchmark does not measure sandbox provisioning. Optional adapters are not an automatically connected autonomous cloud service.
 
 ## Docker deployment
 
+Set distinct random `ONT_ADMIN_TOKEN` and `ONT_WORKER_TOKEN` values of at least 32 characters, plus comma-separated `ONT_ALLOWED_HOSTS` containing your actual hostnames. Then run:
+
 ```bash
-# Set distinct strong ONT_ADMIN_TOKEN and ONT_WORKER_TOKEN values in your shell.
 docker compose up --build -d
 ```
 
-Compose binds to loopback and persists SQLite in a named volume. For remote access, terminate TLS at an authenticated reverse proxy. This MVP has shared operator/worker credentials, not individual identities or tenant isolation. Do not mount the Docker socket into the control-plane container. Run the worker on a separate trusted execution host.
+The recipe binds to loopback and retains data in a named volume. Remote access requires TLS ingress and appropriate authorization. See [configuration](docs/CONFIGURATION.md) and [operations](docs/OPERATIONS.md) for setup, health, backup and recovery. Keep the worker's execution privileges separate from the control plane.
 
-## Validate
+## Validate a release
+
+Full validation requires Node.js 24, a C++20 compiler with sanitizer support, Python dependencies, and Git. Docker is additionally required for the container smoke test.
 
 ```bash
-python -m unittest discover -s tests -v
-node --check web/app.js
-python -m compileall -q ont scripts
+python scripts/validate.py --cycles 3
+docker build -t ont-control-plane:validated .
+python scripts/container_smoke.py ont-control-plane:validated
 ```
 
-The suite verifies API authorization boundaries, concurrent claim exclusivity, state transitions, human gates, evidence requirements, stale-result rejection, budget accounting, cancellation, persistence, export, and demo/live separation. Browser preview attempted in the build environment, but the preview relay timed out; browser visual QA remains unverified. The Docker image built successfully and the same 12 tests passed inside the container. The build required the environment CA as a temporary BuildKit secret; TLS verification remained enabled. The external agent harness itself has not been exercised.
+The CI badge links to Ont's own release checks: Python tests, frontend logic/render checks, native checks/sanitizers, a container build, and full demo HTTP/restart smoke. Reports are retained as workflow artifacts. The project-refinement gate contains 51 Python tests per cycle; use the matching CI result for the source commit being deployed. See [validation evidence](docs/VALIDATION.md).
 
-## Integration capabilities
+## Packaging and repository map
 
-The optional integration package now includes a model proposal client, immutable checkout and draft-PR delivery, isolated verification, bounded fan-out, Kubernetes rollout/rollback, scoped embedding retrieval, a tenant/role gateway, PKCE transactions, and a minimal local MCP capability tool. These adapters are tested offline and require explicit operator wiring. They are not automatically activated in the reference worker.
+Installable wheel and source-distribution recipes are now included. They are built from this repository; no public PyPI or npm publication is claimed. The wheel carries the Python runtime, `ont` CLI, and browser assets. Native C++ source and developer checks are part of the source distribution/repository, not a precompiled wheel binary.
 
-See [integration setup and status](docs/INTEGRATIONS.md) for exact capabilities, required credentials, and live validation gates. SSO token validation, complete connector OAuth, provider-enforced spending limits, autonomous cloud provisioning, and production rollout qualification remain deployment/integration work.
+```text
+ont/                  Control plane, CLI, presentation, evaluation and integration adapters
+web/                  Browser console source
+native/scheduler/     C++20 placement and capacity planner
+tests/                Workflow, tenant, adapter, presentation and frontend regression tests
+scripts/              Validation, packaging, backup, diagrams and container checks
+examples/             Factory configuration example
+docs/                 Architecture, setup, integration, operation and validation guides
+.github/              Release checks and dependency-update configuration
+```
 
-## Repository handoff
-
-Source is maintained at https://github.com/bijit-ghosh/Ont.
+See [packaging](docs/PACKAGING.md), [contributing](CONTRIBUTING.md), [security](SECURITY.md), and the [roadmap](docs/ROADMAP.md).
 
 ## License
 
-MIT License. Copyright (c) 2026 Bijit Ghosh. See [LICENSE](LICENSE).
-
-## Release operations
-
-See [docs/OPERATIONS.md](docs/OPERATIONS.md) for production settings, health checks, backup/restore, and outstanding release gates. Run `python scripts/validate.py --cycles 3` for the repeatable release gate.
-
-## Continuous improvement and concrete design
-
-[System design](docs/SYSTEM_DESIGN.md) defines service boundaries, delivery semantics, evidence contracts, and rollout gates. [Improvement guide](docs/IMPROVEMENT.md) describes the implemented paired evaluator, UCB learning primitive, continuous dataset watcher, and production promotion design. These modules evaluate supplied evidence; real model training and autonomous policy deployment require additional integrations.
-
-## Frontend, control plane, and native execution planning
-
-Ont uses JavaScript for the browser, Python for workflow management and evaluation, and C++20 for the new placement/capacity planner. [Performance and elasticity](docs/PERFORMANCE.md) explains the stack boundaries, measured local scheduling overhead, and warm-sandbox integration design. The native planner is tested separately; it does not yet provision an elastic sandbox fleet.
-
-## Client presentation
-
-Run `python -m scripts.presentation` for an isolated, labeled demonstration workspace. [Presentation guide](docs/PRESENTATION.md) provides the walkthrough and distinguishes demonstrated behavior from live integration requirements.
+[MIT License](LICENSE). Copyright (c) 2026 Bijit Ghosh.

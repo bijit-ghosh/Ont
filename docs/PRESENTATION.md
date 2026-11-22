@@ -2,7 +2,7 @@
 
 ## Start a repeatable presentation
 
-Use Python 3.12, install `requirements.lock.txt`, and run from the repository root:
+Use Python 3.12, install `requirements.lock.txt` and the local project (`python -m pip install --no-deps .`), then run `ont demo`. The source-checkout equivalent is:
 
 ```bash
 python -m scripts.presentation

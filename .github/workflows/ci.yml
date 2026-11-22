@@ -18,12 +18,18 @@ jobs:
         with:
           node-version: '24'
       - run: pip install -r requirements.lock.txt
+      - run: pip install -r requirements-build.txt
       - run: python -m pip check
       - run: python scripts/validate.py --cycles 3
+      - run: python -m build --no-isolation
+      - run: python scripts/package_smoke.py
       - run: docker build -t ont-control-plane:validated .
       - run: python scripts/container_smoke.py ont-control-plane:validated
       - uses: actions/upload-artifact@v7.0.2
         if: always()
         with:
           name: validation-report
-          path: validation-report.json
+          path: |
+            validation-report.json
+            dist/*.whl
+            dist/*.tar.gz

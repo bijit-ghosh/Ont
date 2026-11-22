@@ -21,3 +21,7 @@ An outdated-package check is not a vulnerability audit. This release records com
 ## Native build tooling
 
 The release gate requires a C++20 compiler and address/undefined-behavior sanitizer support (`c++`, GCC or Clang). The native module has no external library dependencies. GitHub's Ubuntu runner supplies the compiler; local operators must install compatible build tools before running the full gate. The control-plane Docker runtime remains Python-only because the planner is a separate component, not a linked runtime dependency.
+
+## Distribution build tools
+
+`requirements-build.txt` pins build, setuptools, wheel, packaging and pyproject-hooks for repeatable package checks. Keep these tools separate from the runtime lock; do not freeze a mixed build environment back into application dependencies. CI validates both the source and installed wheel.

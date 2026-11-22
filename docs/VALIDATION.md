@@ -1,53 +1,42 @@
 # Ont validation report
 
-## Current checks
+## Current release checks
 
-The release gate runs `python scripts/validate.py --cycles 3`. All 24 tests pass per cycle, for 72 successful test executions. Python compilation, browser JavaScript syntax, and diff whitespace checks also pass. The machine-readable result is written to `validation-report.json` and retained by GitHub CI.
+The source gate is `python scripts/validate.py --cycles 3`. The project-refinement run passed **51 Python tests per cycle**, for 153 test executions, plus six-view frontend render/escaping/auth/error checks, JavaScript syntax, Python compilation, whitespace checks, native scheduler tests and address/undefined-behavior sanitizer checks. The machine-readable report is `validation-report.json`. Repeated cycles test fixture stability; they are not independent evidence of real-service quality.
 
 | Area | Evidence |
 | --- | --- |
-| Workflow correctness | Human gates, demo/live separation, rejection, cancellation, required evidence, budgets, immutable snapshots |
-| Worker consistency | Exclusive concurrent claims, lease expiry/recovery, stale-result rejection, heartbeat |
-| Production boundary | Fail-closed secrets/hosts, auth separation, health, malformed and streamed request limits, pagination bounds |
-| Storage | Persistence, artifact hashes, JSON export, consistent online backup, restored record count and SQLite integrity check |
-| Synthetic load | 100 concurrent run creations across eight threads; unique IDs, successful responses, two complete pages, successful restore |
-| Improvement | Held-out paired gains, safety/quality vetoes, minimum sample gate, duplicate/unpaired rejection, bounded-reward UCB selection |
-| Continuous evaluation | Two scans of identical evidence produce one content-addressed report and no production promotion |
+| Workflow | Human gates, demo/live separation, rejection, cancellation, required artifacts, budgets and immutable snapshots |
+| Worker consistency | Exclusive claims, heartbeat, lease expiry/recovery and stale-result rejection |
+| Access | Production credential/host checks, startup credential stability, role separation, tenant database isolation and request limits |
+| Persistence | Concurrent 100-run fixture, backup/restore integrity, artifact hashes, export and container restart |
+| Integrations | Controlled model, PR, rollback, OAuth, memory, MCP and spending-contract tests; local Git patch/commit tests |
+| Presentation | Isolated fixture states, completed demo and protection against accidental overwrite |
+| Frontend | Six views, escaped output, authenticated API download, login/error behavior and syntax |
+| Native code | Resource fit, scaling bounds, forecast invariants, sanitizers and synthetic placement timing |
+| Documentation | Local links/assets exist; README badges and repository identity point to Ont |
+| Distribution | Wheel/sdist build; isolated install loads bundled assets, prepares demo and reports CLI version |
 
-Synthetic load and reward tests validate implementation behavior; they do not establish real deployment capacity or software-generation quality. The measured local workload duration varies by machine and is not an SLA.
+## Runtime and packaging
 
-## Historical and current evidence boundaries
+CI builds the exact dependency lock into a non-root Docker image. The HTTP smoke covers static assets, health, authentication, all five demo stages, both review gates and bypass rejection, five artifacts, zero demo cost and completion persistence after restart. A separate health probe was tested with only an application hostname allowlisted.
 
-The earlier container build and 12-test container run passed. The subsequent 16-test GitHub CI release passed. The current changes require their own CI run. No updated container build, real model execution, external PR automation, neural RL training, or production rollout is claimed from these local checks.
+The wheel smoke installs outside the checkout and imports its own bundled `ont/static/` assets. It does not rely on the source `web/` directory. Build artifacts and the validation report are retained by CI. Use the result for the exact source commit being presented or deployed.
 
-Managed browser preview previously failed because the environment relay did not become ready. JavaScript syntax checks are not browser interaction tests. Browser/accessibility, real-world load/soak, provider cost reconciliation, independent exact-commit verification, sandbox assessment, TLS/monitoring, and deployed restore rehearsal remain explicit release gates in [OPERATIONS.md](OPERATIONS.md).
+## Measured evidence boundaries
+
+Adapter tests use mocks where external services are involved. They do not establish live model quality/billing, actual PR publication, Kubernetes behavior, complete OAuth, SSO, provider-enforced spending or production rollout reliability. The isolated Docker checks have networking disabled and exercise the demo lifecycle.
+
+The native microbenchmark is a resident-memory placement scan, not sandbox provisioning or end-to-end task latency. The local 100-run fixture is not a capacity or soak benchmark.
+
+Browser preview attempts failed because the managed relay did not become ready. Frontend logic tests are not browser interaction, responsive visual, or accessibility tests. These and actual-service qualification remain gates in [READINESS.md](READINESS.md).
 
 ## Reproduce
 
-Install `requirements.lock.txt`, run the release gate, inspect the report, and review CI output for the matching commit. A failed check stops the loop. Fix the cause before rerunning; do not suppress failed checks or count retries as additional independent evidence.
+Install `requirements.lock.txt` and compatible Node/C++ tools; run the complete source gate. For packages, install `requirements-build.txt`, run `python -m build --no-isolation` and `python scripts/package_smoke.py`. For Docker, build `ont-control-plane:validated` and run `python scripts/container_smoke.py ont-control-plane:validated`.
 
-## Dependency refresh
+A failed check stops the loop. Fix the cause before rerunning; do not suppress failures or reinterpret retries as success. Build/deployment tooling can require the environment's CA bundle; keep TLS verification enabled and credentials out of artifacts.
 
-The refreshed lockfile was installed in a clean Python 3.12 virtual environment. `pip check` passed. All 24 tests passed across three cycles with the HTTPX2 transport, plus Python compilation, JavaScript syntax, and whitespace checks. Architecture SVG generation completed; the SVG is generated by a checked-in dependency-free renderer. Updated CI action releases require the matching commit's GitHub workflow result. Current runtime validation does not imply a completed vulnerability audit or OS-wide package upgrade.
+## Repository metadata
 
-## Polyglot planner validation
-
-The release gate now also compiles the C++20 scheduler with warnings as errors, runs its invariant tests, repeats them with address/undefined-behavior sanitizers, and runs an optimized placement microbenchmark. Three combined cycles passed locally: 72 Python test executions plus native checks/sanitizers. One recorded local sample for 256 slots and 10,000 timed scans reported p50 290 ns, p95 301 ns, and p99 491 ns. Timing varies with compiler/host load; this is in-process selection overhead only, not sandbox startup or network latency. There is no absolute timing gate on shared CI runners.
-
-## Optional integration regression coverage
-
-The integration suite adds model response/endpoint validation, budget reservation exhaustion and settlement, scoped embedding retrieval, one-use PKCE state, tenant database separation and role enforcement, existing draft-PR reconciliation, checkout allowlisting, failed-rollout undo, bounded fan-out, MCP discovery, verification image requirements, verification failure propagation, and invalid-credential rejection. Provider/GitHub/Kubernetes/Docker adapter tests use controlled transports or mocks where external systems are involved. They establish contract behavior, not live service qualification. The complete suite now contains 36 Python tests plus native checks/sanitizers.
-
-## Expanded release verification
-
-The suite now contains 39 Python tests, including a real local Git patch/commit path, unauthorized new-file rejection, and concurrent budget settlement. Budget settlement now takes an immediate SQLite transaction so only one caller can settle a reservation. Three complete cycles passed locally, alongside native checks and address/undefined-behavior sanitizers.
-
-A fresh non-root Docker image built successfully with the exact dependency lock. The build used the session CA as a temporary BuildKit secret, without disabling TLS verification or embedding the CA. `scripts/container_smoke.py` exercised real HTTP inside the production-configured container with networking disabled: static assets, health endpoints, unauthenticated rejection, authenticated work-order creation, stage advancement, artifact retrieval, and persistence after restart. The test creates and removes its own disposable container and data volume. CI now builds the image and runs this smoke test too.
-
-The first smoke-test attempt exposed case-sensitive header lookup in the test script; the HTTP header assertion was corrected to use case-insensitive semantics and the test passed. This was a test-harness defect, not evidence of an application HTTP failure.
-
-Browser preview was attempted again, but the managed relay timed out before opening port 4173. Browser interaction and accessibility therefore remain unverified. Live model calls, GitHub PR delivery, Kubernetes rollout, SSO/OAuth completion, and provider spending enforcement still require configured services and separate qualification. Passing adapter mocks does not establish those live outcomes.
-
-## Presentation swarm gate
-
-Four parallel reviews added authentication, delivery, frontend and deployment regression coverage. The current complete gate passed 49 Python tests across three cycles plus frontend six-view render checks and native checks/sanitizers. The production-configured Docker smoke now covers the complete demo lifecycle and both review gates. See [CLIENT_RELEASE.md](CLIENT_RELEASE.md) for fixes, evidence boundaries and presentation readiness, and [PRESENTATION.md](PRESENTATION.md) for the isolated walkthrough.
+The README About, mission, badges and documentation are tracked source. Editing the separate GitHub About/sidebar field was denied by the integration's administration permissions. This does not affect source pushes, tests or package builds.

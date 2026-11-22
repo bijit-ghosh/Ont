@@ -1,5 +1,7 @@
 # Ont presentation release verification
 
+This report records the presentation gate before the subsequent packaging refinement. [VALIDATION.md](VALIDATION.md) records current checks.
+
 ## Decision
 
 The local control-plane presentation is ready to rehearse using [PRESENTATION.md](PRESENTATION.md). It demonstrates actual workflow state, persistence, human approval gates, and artifacts through explicitly labeled demo orders. It is not qualification of a connected autonomous coding/deployment service.
@@ -40,3 +42,7 @@ The build used a temporary session CA secret; TLS verification remained enabled 
 ## Limits and required next validation
 
 Managed preview could not start because its relay timed out; no visual/browser-interaction claim is made. Real model quality, provider billing, live PR creation, Kubernetes rollout, OIDC/SSO, complete OAuth exchange, production-scale load, and infrastructure isolation need an authorized configured environment. Refer to [INTEGRATIONS.md](INTEGRATIONS.md) before presenting any optional adapter as a connected service.
+
+## Distribution follow-up
+
+Installable wheel/source recipes, a packaged `ont` CLI and bundled UI were subsequently added. Packaging is validated with `scripts/package_smoke.py`; the matching CI result includes both distribution and container checks. Historical presentation counts above describe that earlier gate, not a fixed total for every later release.

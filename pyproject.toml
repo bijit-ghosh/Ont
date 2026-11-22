@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ont-software-factory"
+version = "0.1.0"
+description = "Ont software factory: orchestrate coding agents, review evidence, and improve delivery"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "MIT"
+authors = [{name = "Bijit Ghosh"}]
+dynamic = ["dependencies"]
+
+[project.urls]
+Repository = "https://github.com/bijit-ghosh/Ont"
+Documentation = "https://github.com/bijit-ghosh/Ont/tree/main/docs"
+Issues = "https://github.com/bijit-ghosh/Ont/issues"
+
+[project.scripts]
+ont = "ont.cli:main"
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[tool.setuptools.packages.find]
+include = ["ont", "ont.*"]

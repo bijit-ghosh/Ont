@@ -5,3 +5,7 @@ data/
 .venv/
 *.sqlite3*
 validation-report.json
+
+build/
+dist/
+*.egg-info/

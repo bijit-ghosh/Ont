@@ -16,13 +16,14 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
 ROOT = Path(__file__).resolve().parents[1]
+WEB = ROOT/'web' if (ROOT/'web/index.html').is_file() else Path(__file__).parent/'static'
 STAGES = ['triage', 'spec', 'build', 'review', 'verify']
 DEFAULT = {'name': 'Product engineering', 'repository': 'bijit-ghosh/Ont', 'budget': 20.0,
            'model': 'Bring your own harness', 'approval_stages': ['spec', 'review']}
 
 
 def create_app(db_path=None):
-    db_path = str(db_path or os.getenv('ONT_DB', ROOT / 'data' / 'ont.sqlite3'))
+    db_path = str(db_path or os.getenv('ONT_DB', Path.cwd() / 'data' / 'ont.sqlite3'))
     production = os.getenv('ONT_ENV', 'development') == 'production'
     admin_token = os.getenv('ONT_ADMIN_TOKEN', '')
     worker_token = os.getenv('ONT_WORKER_TOKEN', '')
@@ -246,8 +247,8 @@ def create_app(db_path=None):
         with db() as c:
             return {table:[dict(r) for r in c.execute('SELECT * FROM '+table)] for table in ['settings','events','artifacts']} | {'runs':[public(r) for r in c.execute('SELECT * FROM runs ORDER BY created DESC')]}
     @app.get('/')
-    def index(): return FileResponse(ROOT/'web/index.html')
-    app.mount('/assets',StaticFiles(directory=ROOT/'web'),name='assets')
+    def index(): return FileResponse(WEB/'index.html')
+    app.mount('/assets',StaticFiles(directory=WEB),name='assets')
     return app
 
 class Factory(BaseModel):
