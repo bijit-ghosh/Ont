@@ -72,6 +72,6 @@ API p95 under 300 ms at the declared workspace workload; no lost acknowledged ru
 
 [PERFORMANCE.md](PERFORMANCE.md) records the repository breakdown, native scheduling component, latency classes, and warm-pool integration contract. Native recommendations are not wired to the Python worker yet.
 
-## Integration implementation update
+## Integration components
 
-`ont/integrations/` now contains optional model, checkout/delivery, container verification, fan-out, Kubernetes release, semantic memory, PKCE, and local MCP components. `ont/gateway.py` provides tenant database routing and bearer roles. These are separate configurable adapters, not an automatically connected cloud deployment. [INTEGRATIONS.md](INTEGRATIONS.md) is the authoritative activation and live-validation matrix.
+`ont/integrations/` contains optional model, checkout/delivery, container verification, fan-out, Kubernetes release, semantic memory, PKCE, and local MCP components. `ont/gateway.py` provides tenant database routing and bearer roles. These are separate configurable adapters, not an automatically connected cloud deployment. [INTEGRATIONS.md](INTEGRATIONS.md) is the authoritative activation and live-validation matrix.

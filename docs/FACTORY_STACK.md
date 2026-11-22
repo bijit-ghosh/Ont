@@ -2,7 +2,7 @@
 
 ![Ont Software Factory Stack](assets/ont-factory-stack.png)
 
-Ont organizes its software factory into seven layers. The diagram combines the implemented core with optional adapters; the outlined cloud plane identifies future infrastructure. It describes component responsibilities, not a claim that every integration is connected or production-qualified.
+Ont organizes its software factory into seven layers. The diagram combines the implemented core with optional adapters; the outlined cloud plane identifies future infrastructure. The integration guide defines configuration requirements for each adapter.
 
 | Layer | Current project responsibility | Implementation boundary |
 | --- | --- | --- |
@@ -30,4 +30,4 @@ This sequence is the intended connected path. The repository supplies the contro
 
 ## Diagram assets
 
-The presentation graphic is `docs/assets/ont-factory-stack.png`. The module map remains in [ARCHITECTURE_MAP.md](ARCHITECTURE_MAP.md). This document is the textual source of truth for the layered view; update its implementation boundaries when capabilities change.
+The stack graphic is `docs/assets/ont-factory-stack.png`. The module map remains in [ARCHITECTURE_MAP.md](ARCHITECTURE_MAP.md). This document is the textual source of truth for the layered view; update its implementation boundaries when capabilities change.

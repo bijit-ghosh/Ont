@@ -15,6 +15,6 @@
 - Persistent work-order lifecycle, human gates, leases, cancellation, artifacts and configuration snapshots.
 - Tenant-role gateway, optional model/delivery/verification/release/memory adapters and offline comparative evaluation.
 - Native C++ placement/capacity planner with checks and sanitizers.
-- Presentation fixture, frontend regression controls, Docker HTTP/restart checks, and automated CI.
+- Demo fixture, frontend regression controls, Docker HTTP/restart checks, and automated CI.
 
-These are source changes, not an announcement of a public package-registry release. Live integration and deployment qualification remain governed by the readiness guide.
+Distribution packages are built from source. Deployment requirements are documented in the operations and integration guides.

@@ -5,7 +5,7 @@
 [![Ont release checks](https://github.com/bijit-ghosh/Ont/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/bijit-ghosh/Ont/actions/workflows/ci.yml)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-[Quickstart](#quickstart) · [Architecture](docs/FACTORY_STACK.md) · [Packages](docs/PACKAGING.md) · [Client walkthrough](docs/PRESENTATION.md) · [Validation](docs/CLIENT_RELEASE.md) · [Documentation](docs/README.md)
+[Quickstart](#quickstart) · [Architecture](docs/FACTORY_STACK.md) · [Packages](docs/PACKAGING.md) · [Workflow guide](docs/DEMO.md) · [Validation](docs/VALIDATION.md) · [Documentation](docs/README.md)
 
 ![Ont Software Factory Stack](docs/assets/ont-factory-stack.png)
 
@@ -27,7 +27,7 @@ Make agent-assisted software delivery dependable: every change should have a cle
 
 | Goal | Entry point |
 | --- | --- |
-| Present the workflow without external credentials | `ont demo` and the [meeting guide](docs/PRESENTATION.md) |
+| Explore the workflow locally | `ont demo` and the [workflow guide](docs/DEMO.md) |
 | Run your team's control plane | `ont serve` and [configuration](docs/CONFIGURATION.md) |
 | Connect a coding model and repository | [Integration setup](docs/INTEGRATIONS.md) and [worker protocol](docs/WORKER.md) |
 | Understand the stack and execution boundaries | [Factory stack](docs/FACTORY_STACK.md) and [system design](docs/SYSTEM_DESIGN.md) |
@@ -50,9 +50,9 @@ ont demo
 
 On Windows PowerShell, replace the activation command with `.\.venv\Scripts\Activate.ps1`.
 
-Open `http://127.0.0.1:3000` on the machine running Ont. The demo uses its own database and includes queued work, approval checkpoints, and completed illustrative runs. It does not call a model or alter a repository. Existing presentation databases are preserved; use `ont demo --db data/another-demo.sqlite3` for a fresh workspace.
+Open `http://127.0.0.1:3000` on the machine running Ont. The demo uses its own database and includes queued work, approval checkpoints, and completed illustrative runs. It does not call a model or alter a repository. Existing demo databases are preserved; use `ont demo --db data/another-demo.sqlite3` for a fresh workspace.
 
-For an empty operational workspace, run `ont serve`. Source-checkout commands such as `python -m scripts.presentation` remain supported. Tokens are optional only for loopback development; configure production credentials before remote use.
+For an empty operational workspace, run `ont serve`. Tokens are optional only for loopback development; configure production credentials before remote use.
 
 ## What you can use today
 
@@ -69,7 +69,7 @@ For an empty operational workspace, run `ont serve`. Source-checkout commands su
 | Native planning | C++20 resource-fit selection and bounded capacity recommendations |
 | Local agent tooling | Minimal stdio MCP discovery/capability tool and PKCE transaction helpers |
 
-The default server is one workspace. Tenant routing is a separate entry point. Adapter contract tests are not live-service qualification. [Readiness](docs/READINESS.md) describes the exact boundaries, including SSO, provider quotas, browser validation and cloud execution work still required.
+The default server is one workspace. Tenant routing is a separate entry point. [Deployment requirements](docs/READINESS.md) covers integration setup and environment validation.
 
 ## Architecture
 
@@ -80,7 +80,7 @@ Ont uses **JavaScript** for the browser, **Python** for control and evaluation, 
 - [Service contracts and rollout stages](docs/SYSTEM_DESIGN.md)
 - [Latency and elasticity boundaries](docs/PERFORMANCE.md)
 
-The planner's local microbenchmark does not measure sandbox provisioning. Optional adapters are not an automatically connected autonomous cloud service.
+See the performance guide for measurement boundaries and the integration guide for deployment configuration.
 
 ## Docker deployment
 
@@ -106,13 +106,13 @@ The CI badge links to Ont's own release checks: Python tests, frontend logic/ren
 
 ## Packaging and repository map
 
-Installable wheel and source-distribution recipes are now included. They are built from this repository; no public PyPI or npm publication is claimed. The wheel carries the Python runtime, `ont` CLI, and browser assets. Native C++ source and developer checks are part of the source distribution/repository, not a precompiled wheel binary.
+Build wheel and source-distribution packages directly from this repository. The wheel carries the Python runtime, `ont` CLI, and browser assets. Native C++ source and developer checks are part of the source distribution/repository, not a precompiled wheel binary.
 
 ```text
-ont/                  Control plane, CLI, presentation, evaluation and integration adapters
+ont/                  Control plane, CLI, demo, evaluation and integration adapters
 web/                  Browser console source
 native/scheduler/     C++20 placement and capacity planner
-tests/                Workflow, tenant, adapter, presentation and frontend regression tests
+tests/                Workflow, tenant, adapter, demo and frontend regression tests
 scripts/              Validation, packaging, backup, diagrams and container checks
 examples/             Factory configuration example
 docs/                 Architecture, setup, integration, operation and validation guides

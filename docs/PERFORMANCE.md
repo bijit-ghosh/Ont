@@ -35,7 +35,7 @@ Compile `main.cpp` with `c++ -std=c++20 -O2`. The CLI accepts lines of `arrival_
 | Cold sandbox provisioning | Provider-specific milliseconds to seconds | Includes VM/container startup, image pull, mount and isolation setup |
 | Coding task completion | Seconds to minutes or longer | Includes model/tool calls, builds, tests, and human gates |
 
-Only the first operation has a benchmark in this repository. It is a synthetic resident-memory scan, not a guarantee of sandbox latency. Network round trips, storage durability, isolation, and scheduler contention cannot honestly be bundled into a microsecond sandbox-start claim.
+Only the first operation has a benchmark in this repository. It is a synthetic resident-memory scan, not a guarantee of sandbox latency. Network round trips, storage durability, isolation, and scheduler contention require separate latency budgets.
 
 ## Elastic sandbox integration design
 
@@ -52,4 +52,4 @@ MicroVM snapshots, gVisor runtimes, or equivalent isolation providers are adapte
 
 ## Current boundary
 
-The native module is independently buildable and tested. Its output is advisory and is not connected to the existing Docker worker. There is no running elastic broker, predictive cloud autoscaler, or microsecond sandbox-provisioning claim. Use integration fault tests, representative mixed workloads, provider quotas, and real cold/warm timing before declaring those capabilities operational.
+The native module is independently buildable and tested. Its output is advisory and is not connected to the existing Docker worker. Warm-pool provisioning and predictive autoscaling belong to the broker integration. Use integration fault tests, representative mixed workloads, provider quotas, and real cold/warm timing before enabling the broker in production.

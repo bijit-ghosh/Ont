@@ -9,7 +9,7 @@
 | Git source archive | Tracked repository state, including CI configuration | Full repository handoff |
 | Docker image | Locked Python runtime and browser assets | Reproducible service deployment |
 
-No public package registry publication or hosted release is claimed. Wheel metadata uses the distribution name `ont-software-factory`; the installed command is `ont`. The JavaScript console is bundled with the wheel, not published to npm. C++ source is supplied separately; the wheel does not contain a native scheduler binary.
+Build and install artifacts from this repository. Wheel metadata uses the distribution name `ont-software-factory`; the installed command is `ont`. The JavaScript console is bundled with the wheel, not published to npm. C++ source is supplied separately; the wheel does not contain a native scheduler binary.
 
 ## Build from source
 
@@ -20,7 +20,7 @@ python -m build --no-isolation
 python scripts/package_smoke.py
 ```
 
-Build artifacts appear in `dist/`. The smoke test installs the wheel into a disposable directory outside the checkout, serves its packaged assets through the test client, creates a complete labeled presentation fixture, and checks the CLI version. It makes no live model or deployment calls.
+Build artifacts appear in `dist/`. The smoke test installs the wheel into a disposable directory outside the checkout, serves its packaged assets through the test client, creates a complete labeled demo fixture, and checks the CLI version. It makes no live model or deployment calls.
 
 `requirements.lock.txt` pins application dependencies for this release. `requirements-build.txt` pins build tools. Package metadata declares compatible dependency ranges; use the runtime lock when preparing a controlled deployment. The build backend copies current `web/` sources into the wheel's `ont/static/` directory, avoiding stale checked-in duplicates.
 
@@ -33,7 +33,7 @@ ont --version
 ont serve
 ```
 
-The default database lives under the working directory's `data/`, not inside site-packages. Set `ONT_DB` for a different persistent path. `ont demo` creates a separate presentation database and refuses to overwrite an existing one.
+The default database lives under the working directory's `data/`, not inside site-packages. Set `ONT_DB` for a different persistent path. `ont demo` creates a separate demo database and refuses to overwrite an existing one.
 
 ## Release checklist
 

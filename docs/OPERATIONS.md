@@ -37,7 +37,7 @@ To restore: stop the service and workers, retain the current database directory 
 
 ## Test and repair loop
 
-`python scripts/validate.py --cycles 3` runs the complete API suite, Python compilation, JavaScript syntax validation, and whitespace checks repeatedly. It stops on the first failure and writes a machine-readable report. Fix the cause before rerunning; retries never turn a failing test into success. CI runs the same gate on pushes, pull requests, and manual dispatch and retains the report. This is a bounded validation loop, not an unattended agent modifying production indefinitely.
+`python scripts/validate.py --cycles 3` runs the complete API suite, Python compilation, JavaScript syntax validation, and whitespace checks repeatedly. It stops on the first failure and writes a machine-readable report. Fix the cause before rerunning; retries never turn a failing test into success. CI runs the same gate on pushes, pull requests, and manual dispatch and retains the report. The loop stops at the first failing check and retains its report.
 
 ## Remaining production gates
 
@@ -49,7 +49,7 @@ To restore: stop the service and workers, retain the current database directory 
 - TLS ingress, abuse controls, monitoring/alert delivery, secret rotation, and backup restoration in the actual deployment.
 - Individual SSO identity, stronger audit integrity, deployed tenant-isolation review, and durable cloud execution before offering a multi-tenant service.
 
-These are release gates to validate, not claims that those integrations are already operational.
+Track these checks in the deployment release record.
 
 ## Improvement process operations
 

@@ -32,8 +32,8 @@ Use `ont.integrations.coding.build_change` from a trusted worker adapter. It che
 
 Provider calls, GitHub access, and Kubernetes control need separate least-privilege identities. Keep model keys outside sandbox execution. The offline Docker reference runner does not gain internet access just because these adapters exist. Deploy adapters through a broker with explicit network and credential policy.
 
-## Live qualification checklist
+## Environment validation
 
 Use a disposable authorized repository, provider quota, pinned verifier image, and test namespace. Confirm exact checkout, allowed-path patching, verification failure blocking, repeated PR reconciliation, cancellation, usage reconciliation, and rollout failure/undo. Test actual SSO issuer/audience/signature/expiry validation at the identity ingress before relying on it. Record these outcomes separately from mocked adapter tests.
 
-No external provider credentials or release targets were configured during this implementation. Live publication or deployment is therefore not evidence established by the current test suite.
+Record service-level results alongside the release checks for the configured environment.

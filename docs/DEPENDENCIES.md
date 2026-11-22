@@ -16,7 +16,7 @@ GitHub Actions were checked against their published latest releases and updated 
 4. Run `python -m pip check` and `python scripts/validate.py --cycles 3` in the new environment.
 5. Rebuild the container, validate its runtime, review advisories and licenses, then use the matching commit's CI results before release.
 
-An outdated-package check is not a vulnerability audit. This release records compatibility evidence; no clean vulnerability-scan claim is made. Rebuild images for OS security fixes and use your deployment scanner for the actual built image.
+Run dependency advisory checks separately from compatibility tests. Rebuild images for OS security fixes and use your deployment scanner for the actual built image.
 
 ## Native build tooling
 

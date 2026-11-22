@@ -22,10 +22,6 @@ flowchart LR
   Future[Planned: GitHub App / MCP / inference gateway / memory adapter] -. scoped adapters .-> API
 ```
 
-## Repository organization
-
-The reference projects were consulted only for repository organization: clear quickstarts, a documentation index, explicit validation evidence, and separated implementation, examples, and operations material. Ont's feature architecture and implementation are independent; no source or architecture was adopted from those projects.
-
 ## Implementation map
 
 | Capability | Module | Validation |
@@ -36,7 +32,7 @@ The reference projects were consulted only for repository organization: clear qu
 | Continuous evaluation | `scripts/improve_loop.py` | Idempotent scan/report test |
 | Backup/recovery | `scripts/backup.py` | Concurrent write fixture and restored integrity/count |
 | Release gate | `scripts/validate.py` | Three complete test cycles and syntax checks |
-| Deployment recipe | `Dockerfile`, `compose.yaml` | Historical build passed; current rebuild is a separate check |
+| Deployment recipe | `Dockerfile`, `compose.yaml` | CI image build and HTTP/restart smoke tests |
 
 See [system design](SYSTEM_DESIGN.md) for durable cloud boundaries and [operations](OPERATIONS.md) for deployment prerequisites.
 
