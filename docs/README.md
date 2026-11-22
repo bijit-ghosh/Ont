@@ -1,6 +1,5 @@
 # Ont documentation index
 
-- [Always-on factory](ALWAYS_ON.md): event-driven runtime and layer-by-layer evolution
 - [Factory stack](FACTORY_STACK.md): layered architecture and presentation graphic
 - [Product](PRODUCT.md): scope and outcomes
 - [Architecture map](ARCHITECTURE_MAP.md): module boundaries

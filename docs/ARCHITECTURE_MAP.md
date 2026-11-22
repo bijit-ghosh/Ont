@@ -43,7 +43,3 @@ See [system design](SYSTEM_DESIGN.md) for durable cloud boundaries and [operatio
 ## Native execution planning
 
 `native/scheduler/` adds a C++20 placement/capacity library and CLI alongside the JavaScript frontend and Python control/evaluation services. The rendered map names this component; its future connection to sandbox provisioning remains an adapter boundary. See [performance and elasticity](PERFORMANCE.md).
-
-## Always-on execution design
-
-[ALWAYS_ON.md](ALWAYS_ON.md) maps durable inbox events, timers, scoped checkpoints, action permissions, and outbox delivery onto each stack layer, with incremental acceptance tests and explicit implementation boundaries.

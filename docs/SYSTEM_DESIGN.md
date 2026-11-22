@@ -75,7 +75,3 @@ API p95 under 300 ms at the declared workspace workload; no lost acknowledged ru
 ## Integration implementation update
 
 `ont/integrations/` now contains optional model, checkout/delivery, container verification, fan-out, Kubernetes release, semantic memory, PKCE, and local MCP components. `ont/gateway.py` provides tenant database routing and bearer roles. These are separate configurable adapters, not an automatically connected cloud deployment. [INTEGRATIONS.md](INTEGRATIONS.md) is the authoritative activation and live-validation matrix.
-
-## Always-on execution design
-
-[ALWAYS_ON.md](ALWAYS_ON.md) maps durable inbox events, timers, scoped checkpoints, action permissions, and outbox delivery onto each stack layer, with incremental acceptance tests and explicit implementation boundaries.

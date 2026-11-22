@@ -99,7 +99,3 @@ See [SYSTEM_DESIGN.md](SYSTEM_DESIGN.md) for plane ownership, transactional deli
 ## Rendered map and reference decisions
 
 [ARCHITECTURE_MAP.md](ARCHITECTURE_MAP.md) maps code modules and boundaries to validation evidence. Regenerate its SVG with `python scripts/render_architecture.py`.
-
-## Always-on execution design
-
-[ALWAYS_ON.md](ALWAYS_ON.md) maps durable inbox events, timers, scoped checkpoints, action permissions, and outbox delivery onto each stack layer, with incremental acceptance tests and explicit implementation boundaries.

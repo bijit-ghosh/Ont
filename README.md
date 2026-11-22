@@ -82,7 +82,3 @@ See [docs/OPERATIONS.md](docs/OPERATIONS.md) for production settings, health che
 ## Frontend, control plane, and native execution planning
 
 Ont uses JavaScript for the browser, Python for workflow management and evaluation, and C++20 for the new placement/capacity planner. [Performance and elasticity](docs/PERFORMANCE.md) explains the stack boundaries, measured local scheduling overhead, and warm-sandbox integration design. The native planner is tested separately; it does not yet provision an elastic sandbox fleet.
-
-## Always-on factory direction
-
-[Always-on architecture](docs/ALWAYS_ON.md) defines how durable events, timers, scoped checkpoints, permissions, and outbox delivery extend the existing stack layer by layer. The document identifies implemented foundations and future runtime work.
