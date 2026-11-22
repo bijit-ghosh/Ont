@@ -20,6 +20,8 @@ jobs:
       - run: pip install -r requirements.lock.txt
       - run: python -m pip check
       - run: python scripts/validate.py --cycles 3
+      - run: docker build -t ont-control-plane:validated .
+      - run: python scripts/container_smoke.py ont-control-plane:validated
       - uses: actions/upload-artifact@v7.0.2
         if: always()
         with:

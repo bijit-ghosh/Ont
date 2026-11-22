@@ -21,6 +21,7 @@ class BudgetLedger:
     def settle(self,key,actual):
         if not math.isfinite(actual) or actual<0:raise ValueError('Invalid cost')
         with sqlite3.connect(self.path) as c:
+            c.execute('BEGIN IMMEDIATE')
             row=c.execute('SELECT ceiling,state FROM reservations WHERE id=?',(key,)).fetchone()
             if not row or row[1]!='reserved':raise ValueError('Unknown or settled reservation')
             # Record overruns rather than erasing real costs.

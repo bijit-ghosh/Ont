@@ -37,3 +37,13 @@ The release gate now also compiles the C++20 scheduler with warnings as errors, 
 ## Optional integration regression coverage
 
 The integration suite adds model response/endpoint validation, budget reservation exhaustion and settlement, scoped embedding retrieval, one-use PKCE state, tenant database separation and role enforcement, existing draft-PR reconciliation, checkout allowlisting, failed-rollout undo, bounded fan-out, MCP discovery, verification image requirements, verification failure propagation, and invalid-credential rejection. Provider/GitHub/Kubernetes/Docker adapter tests use controlled transports or mocks where external systems are involved. They establish contract behavior, not live service qualification. The complete suite now contains 36 Python tests plus native checks/sanitizers.
+
+## Expanded release verification
+
+The suite now contains 39 Python tests, including a real local Git patch/commit path, unauthorized new-file rejection, and concurrent budget settlement. Budget settlement now takes an immediate SQLite transaction so only one caller can settle a reservation. Three complete cycles passed locally, alongside native checks and address/undefined-behavior sanitizers.
+
+A fresh non-root Docker image built successfully with the exact dependency lock. The build used the session CA as a temporary BuildKit secret, without disabling TLS verification or embedding the CA. `scripts/container_smoke.py` exercised real HTTP inside the production-configured container with networking disabled: static assets, health endpoints, unauthenticated rejection, authenticated work-order creation, stage advancement, artifact retrieval, and persistence after restart. The test creates and removes its own disposable container and data volume. CI now builds the image and runs this smoke test too.
+
+The first smoke-test attempt exposed case-sensitive header lookup in the test script; the HTTP header assertion was corrected to use case-insensitive semantics and the test passed. This was a test-harness defect, not evidence of an application HTTP failure.
+
+Browser preview was attempted again, but the managed relay timed out before opening port 4173. Browser interaction and accessibility therefore remain unverified. Live model calls, GitHub PR delivery, Kubernetes rollout, SSO/OAuth completion, and provider spending enforcement still require configured services and separate qualification. Passing adapter mocks does not establish those live outcomes.

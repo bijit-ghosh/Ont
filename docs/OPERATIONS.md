@@ -58,3 +58,7 @@ Run the dataset watcher as a separate unprivileged process with read-only datase
 ## Native planner operations
 
 Run the complete release gate on a build host with C++20 tooling. The native planner is a pure advisory component; deploying the existing Compose recipe does not enable warm pools or autoscaling. Before connecting its recommendations, implement atomic leases, cooldown, ready-capacity telemetry, quota enforcement, and provider failure recovery as specified in [PERFORMANCE.md](PERFORMANCE.md).
+
+## Container release smoke test
+
+Build `ont-control-plane:validated` and run `python scripts/container_smoke.py ont-control-plane:validated`. The script requires Docker at the managed/local Unix socket and creates a disposable isolated container and volume. It tests production credentials, assets, health, workflow HTTP, and restart persistence, then cleans up resources. It does not expose ports or exercise external integrations.
