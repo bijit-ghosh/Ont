@@ -11,9 +11,11 @@
 
 ## About
 
-Ont is an autonomous software factory project for teams building with coding agents. It brings work orders, factory policy, execution evidence, human decisions, and improvement experiments into one inspectable delivery system. Teams can choose their model and harness, retain control of their repositories, and trace how a requested outcome moves toward a reviewed change.
+Ont is a software factory for turning engineering intent into reviewable software changes. It coordinates coding agents, repository work, verification evidence, human approvals, and delivery through one configurable control plane.
 
-The current release provides a persistent control plane, a working operator console, a native scheduling planner, evaluation tools, and optional integration adapters. Live code generation and deployment require configured providers and execution infrastructure; the included demo clearly labels simulated work.
+Built for teams that want to own their development workflow, Ont supports model and harness choice, self-hosted operation, and an inspectable record of each stage. Its goal is to make agent-assisted delivery faster to operate, easier to review, and measurable enough to improve.
+
+The current release includes the operator console, persistent workflows, evaluation tools, a native scheduling planner, and optional integration adapters. Live code generation and deployment require configured providers and execution infrastructure; the demo identifies simulated work explicitly.
 
 Created and maintained by **Bijit Ghosh** under the MIT license.
 
