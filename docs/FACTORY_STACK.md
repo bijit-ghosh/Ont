@@ -31,3 +31,7 @@ This sequence is the intended connected path. The repository supplies the contro
 ## Diagram assets
 
 The presentation graphic is `docs/assets/ont-factory-stack.png`. The module map remains in [ARCHITECTURE_MAP.md](ARCHITECTURE_MAP.md). This document is the textual source of truth for the layered view; update its implementation boundaries when capabilities change.
+
+## Always-on execution design
+
+[ALWAYS_ON.md](ALWAYS_ON.md) maps durable inbox events, timers, scoped checkpoints, action permissions, and outbox delivery onto each stack layer, with incremental acceptance tests and explicit implementation boundaries.
