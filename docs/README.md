@@ -2,6 +2,7 @@
 
 | Need | Guide |
 | --- | --- |
+| Review passed and blocked checks | [One-page test summary](TEST_SUMMARY.md) |
 | Understand Ont and its mission | [Project overview](../README.md) |
 | Start the service or demo | [Quickstart](../README.md#quickstart) and [configuration](CONFIGURATION.md) |
 | Explore sample workflows | [Workflow guide](DEMO.md) |

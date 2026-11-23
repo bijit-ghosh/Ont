@@ -3,7 +3,7 @@
 [![Ont release checks](https://github.com/bijit-ghosh/Ont/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/bijit-ghosh/Ont/actions/workflows/ci.yml)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-[Quickstart](#quickstart) · [Architecture](docs/FACTORY_STACK.md) · [Packages](docs/PACKAGING.md) · [Workflow guide](docs/DEMO.md) · [Validation](docs/VALIDATION.md) · [Documentation](docs/README.md)
+[Quickstart](#quickstart) · [Architecture](docs/FACTORY_STACK.md) · [Packages](docs/PACKAGING.md) · [Workflow guide](docs/DEMO.md) · [Test summary](docs/TEST_SUMMARY.md) · [Documentation](docs/README.md)
 
 ![Ont Software Factory Stack](docs/assets/ont-factory-stack.png)
 

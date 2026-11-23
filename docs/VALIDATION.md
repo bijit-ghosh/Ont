@@ -1,5 +1,7 @@
 # Ont validation report
 
+[One-page test summary](TEST_SUMMARY.md) lists passed, blocked and pending checks for the validated source.
+
 ## Current release checks
 
 The source gate is `python scripts/validate.py --cycles 3`. The source suite contains **51 Python tests**. Three cycles execute 153 tests, alongside six-view frontend render/escaping/auth/error checks, JavaScript syntax, Python compilation, whitespace checks, native scheduler tests and Rust formatting and Clippy checks. The machine-readable report is `validation-report.json`. Repeated cycles test fixture stability; they are not independent evidence of real-service quality.
