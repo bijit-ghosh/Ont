@@ -5,7 +5,7 @@ import unittest
 ROOT=Path(__file__).resolve().parents[1]
 class DocumentationTests(unittest.TestCase):
     def test_local_links_and_images_exist(self):
-        files=[ROOT/'README.md',ROOT/'CONTRIBUTING.md',ROOT/'SECURITY.md',*sorted((ROOT/'docs').glob('*.md'))]
+        files=[ROOT/'README.md',ROOT/'CONTRIBUTING.md',ROOT/'SECURITY.md',*sorted((ROOT/'docs').rglob('*.md'))]
         missing=[]
         for p in files:
             for target in re.findall(r'\]\(([^\s)]+)\)',p.read_text()):
@@ -18,6 +18,6 @@ class DocumentationTests(unittest.TestCase):
         self.assertIn('https://github.com/bijit-ghosh/Ont/actions/workflows/ci.yml/badge.svg?branch=main',text)
         self.assertIn('## About',text);self.assertIn('## Mission',text)
         self.assertNotIn('Defensive simulation',text)
-        for p in [ROOT/'README.md',*sorted((ROOT/'docs').glob('*.md'))]:
+        for p in [ROOT/'README.md',*sorted((ROOT/'docs').rglob('*.md'))]:
             self.assertNotIn('github.com/bijit-ghosh/CyberOps',p.read_text())
             self.assertNotIn('github.com/bijit-ghosh/CortexState',p.read_text())
