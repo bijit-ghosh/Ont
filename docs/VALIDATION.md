@@ -4,7 +4,7 @@
 
 ## Current release checks
 
-The source gate is `python scripts/validate.py --cycles 3`. The source suite contains **51 Python tests**. Three cycles execute 153 tests, alongside six-view frontend render/escaping/auth/error checks, JavaScript syntax, Python compilation, whitespace checks, native scheduler tests and Rust formatting and Clippy checks. The machine-readable report is `validation-report.json`. Repeated cycles test fixture stability; they are not independent evidence of real-service quality.
+The source gate is `python scripts/validate.py --cycles 3`. The source suite contains **58 Python tests**. Three cycles execute 174 tests, alongside six-view frontend render/escaping/auth/error checks, JavaScript syntax, Python compilation, whitespace checks, native scheduler tests and Rust formatting and Clippy checks. The machine-readable report is `validation-report.json`. Repeated cycles test fixture stability; they are not independent evidence of real-service quality.
 
 | Area | Evidence |
 | --- | --- |
@@ -42,3 +42,7 @@ A failed check stops the loop. Fix the cause before rerunning; do not suppress f
 ## Native Rust migration
 
 The migrated scheduler passes six library tests and two CLI integration tests in both debug and release profiles, including parity with the previous scheduling fixtures and capacity invariants across varied workloads. The gate also checks rustfmt and Clippy with warnings denied. Rust code forbids unsafe blocks; the native source distribution uses a committed Cargo lockfile with no third-party crate dependencies. Current performance must be taken from the Rust benchmark output rather than earlier native timing records.
+
+## Enterprise layer evaluations
+
+The architecture-mapped catalog defines 21 executable scenarios and seven enterprise gates. Profiles retain per-case logs, source/catalog fingerprints, commands, durations, test counts and evidence hashes. A separate scorecard distinguishes the automated profile result from enterprise qualification. Missing tools, unexecuted deployment checks and incomplete external controls remain blocked; zero-test or skipped-test runs cannot pass. See [enterprise evaluation](ENTERPRISE_EVALUATION.md).

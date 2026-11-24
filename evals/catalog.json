@@ -1,0 +1,268 @@
+{
+  "schema_version": 1,
+  "suite": "ont-enterprise-stack",
+  "layers": [
+    "factories_as_code",
+    "data_and_evidence",
+    "compute_and_elasticity",
+    "inference_and_agents",
+    "evaluation_and_learning",
+    "orchestration_and_policy",
+    "access_and_delivery"
+  ],
+  "cases": [
+    {
+      "id": "FAC-01",
+      "layer": "factories_as_code",
+      "criterion": "Invalid factory definitions and work orders are rejected",
+      "kind": "local",
+      "selectors": [
+        "tests.test_app.FactoryTests.test_invalid_requests"
+      ]
+    },
+    {
+      "id": "FAC-02",
+      "layer": "factories_as_code",
+      "criterion": "Runs retain budget and factory snapshots after later edits",
+      "kind": "local",
+      "selectors": [
+        "tests.test_app.FactoryTests.test_budget_and_snapshot"
+      ]
+    },
+    {
+      "id": "FAC-03",
+      "layer": "factories_as_code",
+      "criterion": "Demo work is explicitly separate from live execution and spend",
+      "kind": "local",
+      "selectors": [
+        "tests.test_app.FactoryTests.test_demo_does_not_execute_or_charge"
+      ]
+    },
+    {
+      "id": "DAT-01",
+      "layer": "data_and_evidence",
+      "criterion": "Artifact hashes, history and exported records survive reopen",
+      "kind": "local",
+      "selectors": [
+        "tests.test_app.FactoryTests.test_persistence_export_and_hash"
+      ]
+    },
+    {
+      "id": "DAT-02",
+      "layer": "data_and_evidence",
+      "criterion": "Embedding retrieval excludes other tenant records",
+      "kind": "local",
+      "selectors": [
+        "tests.test_integrations.IntegrationTests.test_memory_scope_and_vectors"
+      ]
+    },
+    {
+      "id": "DAT-03",
+      "layer": "data_and_evidence",
+      "criterion": "Concurrent work persists and a consistent backup restores 100 records",
+      "kind": "local",
+      "selectors": [
+        "tests.test_recovery_load.RecoveryLoadTests.test_workload_backup_restore"
+      ]
+    },
+    {
+      "id": "CMP-01",
+      "layer": "compute_and_elasticity",
+      "criterion": "Native placement, capacity, forecast and CLI invariants pass debug/release checks",
+      "kind": "rust",
+      "selectors": []
+    },
+    {
+      "id": "CMP-02",
+      "layer": "compute_and_elasticity",
+      "criterion": "Verifier rejects unpinned images and propagates test failure",
+      "kind": "mocked_contract",
+      "selectors": [
+        "tests.test_integrations.VerificationTests.test_verifier_requires_clean_commit_and_digest",
+        "tests.test_integrations.VerificationTests.test_verifier_emits_only_on_success"
+      ]
+    },
+    {
+      "id": "CMP-03",
+      "layer": "compute_and_elasticity",
+      "criterion": "Production container serves a full gated lifecycle and survives restart",
+      "kind": "container",
+      "selectors": []
+    },
+    {
+      "id": "INF-01",
+      "layer": "inference_and_agents",
+      "criterion": "Model adapter rejects untrusted endpoints and validates structured proposals",
+      "kind": "mocked_contract",
+      "selectors": [
+        "tests.test_integrations.IntegrationTests.test_model_contract_and_endpoint"
+      ]
+    },
+    {
+      "id": "INF-02",
+      "layer": "inference_and_agents",
+      "criterion": "Reservations reject exhausted budgets and settle once under concurrency",
+      "kind": "local",
+      "selectors": [
+        "tests.test_integrations.IntegrationTests.test_budget_reservations_fail_closed",
+        "tests.test_delivery_path.DeliveryPathTests.test_only_one_concurrent_budget_settlement_succeeds"
+      ]
+    },
+    {
+      "id": "INF-03",
+      "layer": "inference_and_agents",
+      "criterion": "Real local Git patch creates an exact verified commit; unauthorized files are blocked",
+      "kind": "local_git_mocked_verifier",
+      "selectors": [
+        "tests.test_delivery_path.DeliveryPathTests.test_real_git_patch_commit_and_verification_handoff",
+        "tests.test_delivery_path.DeliveryPathTests.test_unauthorized_new_file_is_blocked"
+      ]
+    },
+    {
+      "id": "EVA-01",
+      "layer": "evaluation_and_learning",
+      "criterion": "Safety/quality regressions, small samples and training leakage block review eligibility",
+      "kind": "local",
+      "selectors": [
+        "tests.test_improvement.ImprovementTests.test_safety_blocks_reward",
+        "tests.test_improvement.ImprovementTests.test_quality_regression_blocks",
+        "tests.test_improvement.ImprovementTests.test_small_sample_and_training_do_not_promote"
+      ]
+    },
+    {
+      "id": "EVA-02",
+      "layer": "evaluation_and_learning",
+      "criterion": "Duplicate/unpaired outcomes fail and eligible gains never self-promote",
+      "kind": "local",
+      "selectors": [
+        "tests.test_improvement.ImprovementTests.test_duplicates_and_unpaired_fail",
+        "tests.test_improvement.ImprovementTests.test_gain_requires_review"
+      ]
+    },
+    {
+      "id": "EVA-03",
+      "layer": "evaluation_and_learning",
+      "criterion": "Repeated dataset scans remain idempotent and learning rewards stay bounded",
+      "kind": "local",
+      "selectors": [
+        "tests.test_recovery_load.RecoveryLoadTests.test_improvement_loop_is_idempotent",
+        "tests.test_improvement.ImprovementTests.test_bandit_learns_and_rejects_invalid_rewards"
+      ]
+    },
+    {
+      "id": "ORC-01",
+      "layer": "orchestration_and_policy",
+      "criterion": "Live lifecycle requires evidence and approvals; replay is rejected",
+      "kind": "local",
+      "selectors": [
+        "tests.test_app.FactoryTests.test_live_pipeline_gates_evidence_and_replay",
+        "tests.test_app.FactoryTests.test_live_cannot_simulate_or_skip_gates"
+      ]
+    },
+    {
+      "id": "ORC-02",
+      "layer": "orchestration_and_policy",
+      "criterion": "Cancellation and expired/replaced leases reject stale workers",
+      "kind": "local",
+      "selectors": [
+        "tests.test_app.FactoryTests.test_cancellation_invalidates_lease",
+        "tests.test_app.FactoryTests.test_expiry_recovery",
+        "tests.test_app.FactoryTests.test_atomic_claim"
+      ]
+    },
+    {
+      "id": "ORC-03",
+      "layer": "orchestration_and_policy",
+      "criterion": "Cross-tenant access and reader/worker role misuse are denied",
+      "kind": "local",
+      "selectors": [
+        "tests.test_integrations.IntegrationTests.test_tenant_isolation_and_roles",
+        "tests.test_backend_release.BackendReleaseTests.test_gateway_challenges_invalid_auth_but_denies_valid_role"
+      ]
+    },
+    {
+      "id": "ACC-01",
+      "layer": "access_and_delivery",
+      "criterion": "Frontend renders six views, escapes data and enforces login/error controls",
+      "kind": "frontend",
+      "selectors": []
+    },
+    {
+      "id": "ACC-02",
+      "layer": "access_and_delivery",
+      "criterion": "PR publication binds exact verification and authorized repository; existing PR reconciles",
+      "kind": "mocked_contract",
+      "selectors": [
+        "tests.test_release_integrations.ReleaseIntegrationTests.test_publish_blocks_missing_or_mismatched_verification_before_git",
+        "tests.test_release_integrations.ReleaseIntegrationTests.test_publish_blocks_wrong_remote_without_push",
+        "tests.test_integrations.IntegrationTests.test_draft_pr_reconciliation"
+      ]
+    },
+    {
+      "id": "ACC-03",
+      "layer": "access_and_delivery",
+      "criterion": "Failed rollout triggers rollback and PKCE state cannot replay",
+      "kind": "mocked_contract",
+      "selectors": [
+        "tests.test_integrations.IntegrationTests.test_rollout_failure_rolls_back",
+        "tests.test_integrations.IntegrationTests.test_pkce_replay"
+      ]
+    },
+    {
+      "id": "FAC-E1",
+      "layer": "factories_as_code",
+      "criterion": "Reviewed factory promotion and signed version provenance",
+      "kind": "enterprise_gate",
+      "reason": "needs_implementation",
+      "requirement": "Implement signed factory/version provenance and promotion authorization; demonstrate rollback."
+    },
+    {
+      "id": "DAT-E1",
+      "layer": "data_and_evidence",
+      "criterion": "Enterprise retention, restore objectives and data residency",
+      "kind": "enterprise_gate",
+      "reason": "needs_environment",
+      "requirement": "Run deployed retention/deletion and backup restore with agreed RPO/RTO and residency requirements."
+    },
+    {
+      "id": "CMP-E1",
+      "layer": "compute_and_elasticity",
+      "criterion": "Hostile workload isolation and elastic warm-pool recovery",
+      "kind": "enterprise_gate",
+      "reason": "needs_implementation",
+      "requirement": "Connect isolated pool broker and exercise escape assessment, quotas, exhaustion and reset boundaries."
+    },
+    {
+      "id": "INF-E1",
+      "layer": "inference_and_agents",
+      "criterion": "Real provider quality and invoice-backed spending enforcement",
+      "kind": "enterprise_gate",
+      "reason": "needs_environment_and_implementation",
+      "requirement": "Configure an authorized provider, reconcile invoiced usage, and implement hard provider budget controls."
+    },
+    {
+      "id": "EVA-E1",
+      "layer": "evaluation_and_learning",
+      "criterion": "Representative held-out enterprise task performance",
+      "kind": "enterprise_gate",
+      "reason": "needs_dataset",
+      "requirement": "Supply consented frozen task corpus with independent acceptance criteria; measure success, total cost and reviewer time."
+    },
+    {
+      "id": "ORC-E1",
+      "layer": "orchestration_and_policy",
+      "criterion": "Verified SSO and durable cross-host execution",
+      "kind": "enterprise_gate",
+      "reason": "needs_implementation",
+      "requirement": "Complete OIDC identity validation and durable scheduler; fault-inject restarts, revocation and cross-host retries."
+    },
+    {
+      "id": "ACC-E1",
+      "layer": "access_and_delivery",
+      "criterion": "Actual browser accessibility and connected PR/release delivery",
+      "kind": "enterprise_gate",
+      "reason": "needs_environment",
+      "requirement": "Run browser/assistive checks and real authorized GitHub/Kubernetes acceptance tests."
+    }
+  ]
+}

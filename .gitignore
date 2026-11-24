@@ -10,3 +10,4 @@ build/
 dist/
 *.egg-info/
 /native/scheduler/target/
+/evals/reports/

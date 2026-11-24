@@ -6,3 +6,6 @@ recursive-include scripts *.py
 recursive-include tests *.py *.mjs
 recursive-include examples *.json *.md
 prune native/scheduler/target
+
+recursive-include evals *.py *.json *.md
+prune evals/reports

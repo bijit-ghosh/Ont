@@ -94,7 +94,7 @@ docker build -t ont-control-plane:validated .
 python scripts/container_smoke.py ont-control-plane:validated
 ```
 
-The CI badge links to Ont's own release checks: Python tests, frontend logic/render checks, native tests and Clippy checks, a container build, and full demo HTTP/restart smoke. Reports are retained as workflow artifacts. The project-refinement gate contains 51 Python tests per cycle; use the matching CI result for the source commit being deployed. See [validation evidence](docs/VALIDATION.md).
+The CI badge links to Ont's own release checks: Python tests, frontend logic/render checks, native tests and Clippy checks, a container build, and full demo HTTP/restart smoke. Reports are retained as workflow artifacts. The project-refinement gate contains 58 Python tests per cycle; use the matching CI result for the source commit being deployed. See [validation evidence](docs/VALIDATION.md).
 
 ## Packaging and repository map
 
@@ -116,3 +116,7 @@ See [packaging](docs/PACKAGING.md), [contributing](CONTRIBUTING.md), [security](
 ## License
 
 [MIT License](LICENSE). Copyright (c) 2026 Bijit Ghosh.
+
+## Enterprise evaluation
+
+Run `python -m evals.run --out evals/reports/core-001` for layer-mapped scenarios and an evidence scorecard. The [enterprise evaluation guide](docs/ENTERPRISE_EVALUATION.md) maps all seven architecture layers to acceptance criteria, ownership and an incremental adoption path. Use the deployment profile for container checks and `--require-enterprise` to block promotion while qualification gates remain incomplete.
