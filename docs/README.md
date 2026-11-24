@@ -2,6 +2,7 @@
 
 | Need | Guide |
 | --- | --- |
+| Inspect enterprise evaluation results | [Layer scorecard](ENTERPRISE_RESULTS.md) |
 | Assess enterprise fit and adoption | [Enterprise evaluation](ENTERPRISE_EVALUATION.md) and [runnable suite](../evals/README.md) |
 | Review passed and blocked checks | [One-page test summary](TEST_SUMMARY.md) |
 | Read the introduction | [Introducing Ont](blog/ont.md) |

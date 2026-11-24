@@ -44,3 +44,7 @@ The source hash covers implementation, test and evaluation inputs while excludin
 `catalog.json` contains **28 scenarios**: 21 executable acceptance scenarios and seven enterprise gates. The core profile executes 20 scenarios and leaves the container scenario blocked; the deployment profile includes the container check. The suite includes negative tests, concurrency and recovery fixtures, exact-commit delivery guards, tenant denial, and evaluation-regression checks.
 
 [Layer matrix and adoption guide](../docs/ENTERPRISE_EVALUATION.md) defines enterprise ownership, required artifacts and rollout phases. [Product readiness](../docs/READINESS.md) identifies implementation boundaries.
+
+## Recorded deployment-profile result
+
+[Enterprise results](../docs/ENTERPRISE_RESULTS.md) records the validated source and layer totals. Raw logs and report JSON are available in CI artifacts or a local report directory.
