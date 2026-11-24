@@ -94,7 +94,7 @@ docker build -t ont-control-plane:validated .
 python scripts/container_smoke.py ont-control-plane:validated
 ```
 
-The CI badge links to Ont's own release checks: Python tests, frontend logic/render checks, native tests and Clippy checks, a container build, and full demo HTTP/restart smoke. Reports are retained as workflow artifacts. The project-refinement gate contains 58 Python tests per cycle; use the matching CI result for the source commit being deployed. See [validation evidence](docs/VALIDATION.md).
+The CI badge links to Ont's own release checks: Python tests, frontend logic/render checks, native tests and Clippy checks, a container build, and full demo HTTP/restart smoke. Reports are retained as workflow artifacts. The project-refinement gate contains 59 Python tests per cycle; use the matching CI result for the source commit being deployed. See [validation evidence](docs/VALIDATION.md).
 
 ## Packaging and repository map
 

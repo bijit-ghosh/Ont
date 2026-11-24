@@ -36,7 +36,7 @@ def fingerprint(root):
         dirs[:]=sorted(d for d in dirs if d not in {'.git','.venv','target','build','dist','data','__pycache__','reports'} and not d.endswith('.egg-info'))
         for filename in sorted(files):
             p=Path(directory)/filename
-            if p.suffix not in {'.py','.rs','.js','.mjs','.sh','.toml','.lock','.json'}:continue
+            if p.suffix not in {'.py','.rs','.js','.mjs','.sh','.toml','.lock','.json','.html','.css','.yaml','.yml','.txt'} and p.name!='Dockerfile':continue
             if p.name=='validation-report.json':continue
             digest.update(str(p.relative_to(root)).encode()+b'\0'+p.read_bytes());count+=1
     return {'sha256':digest.hexdigest(),'files':count}

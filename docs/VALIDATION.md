@@ -4,7 +4,7 @@
 
 ## Current release checks
 
-The source gate is `python scripts/validate.py --cycles 3`. The source suite contains **58 Python tests**. Three cycles execute 174 tests, alongside six-view frontend render/escaping/auth/error checks, JavaScript syntax, Python compilation, whitespace checks, native scheduler tests and Rust formatting and Clippy checks. The machine-readable report is `validation-report.json`. Repeated cycles test fixture stability; they are not independent evidence of real-service quality.
+The source gate is `python scripts/validate.py --cycles 3`. The source suite contains **59 Python tests**. Three cycles execute 177 tests, alongside six-view frontend render/escaping/auth/error checks, JavaScript syntax, Python compilation, whitespace checks, native scheduler tests and Rust formatting and Clippy checks. The machine-readable report is `validation-report.json`. Repeated cycles test fixture stability; they are not independent evidence of real-service quality.
 
 | Area | Evidence |
 | --- | --- |

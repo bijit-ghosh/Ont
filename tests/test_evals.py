@@ -6,7 +6,7 @@ import subprocess
 import tempfile
 import unittest
 from unittest.mock import patch
-from evals.run import ROOT,validate_catalog,run_case,summarize,main
+from evals.run import ROOT,validate_catalog,run_case,summarize,main,fingerprint
 
 class EnterpriseEvalTests(unittest.TestCase):
     def catalog(self):return json.loads((ROOT/'evals/catalog.json').read_text())
@@ -44,3 +44,12 @@ class EnterpriseEvalTests(unittest.TestCase):
         import sys
         p=subprocess.run([sys.executable,'-m','evals.probe','tests.test_app.NoSuchClass'],cwd=ROOT,capture_output=True,text=True)
         self.assertNotEqual(p.returncode,0)
+
+    def test_fingerprint_covers_ui_and_deployment_inputs(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);(root/'web').mkdir();(root/'web/index.html').write_text('one')
+            a=fingerprint(root);(root/'web/index.html').write_text('two');b=fingerprint(root)
+            self.assertNotEqual(a,b)
+            (root/'compose.yaml').write_text('services: {}');c=fingerprint(root)
+            self.assertNotEqual(b,c)
+            (root/'Dockerfile').write_text('FROM scratch');self.assertNotEqual(c,fingerprint(root))
